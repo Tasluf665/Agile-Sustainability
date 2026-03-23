@@ -1,23 +1,31 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PublicRoute from './PublicRoute';
+import ProtectedRoute from './ProtectedRoute';
 import Login from '../pages/Auth/Login';
 import SignUp from '../pages/Auth/SignUp';
 import ForgotPassword from '../pages/Auth/ForgotPassword';
+import ProjectList from '../pages/Projects/ProjectList/ProjectList';
 
 const AppRouter = () => {
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
   return (
     <Routes>
+      <Route path="/" element={
+        isAuthenticated ? <Navigate to="/projects" replace /> : <Navigate to="/login" replace />
+      } />
+
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
 
-      {/* Placeholder for protected routes */}
-      <Route path="/projects" element={<div className="p-8"><h1>Projects Page</h1></div>} />
-
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/projects" element={<ProjectList />} />
+      </Route>
     </Routes>
   );
 };
