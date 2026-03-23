@@ -31,6 +31,27 @@
   background-color: var(--color-bg-light);
 }
 
+.outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.outline:hover {
+  background-color: var(--color-primary);
+  color: var(--text-white);
+}
+
+.outlineDark {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+
+.outlineDark:hover {
+  background-color: var(--color-bg-light);
+}
+
 .fullWidth {
   width: 100%;
 }

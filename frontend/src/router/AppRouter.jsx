@@ -7,6 +7,7 @@ import Login from '../pages/Auth/Login';
 import SignUp from '../pages/Auth/SignUp';
 import ForgotPassword from '../pages/Auth/ForgotPassword';
 import ProjectList from '../pages/Projects/ProjectList/ProjectList';
+import ProjectDetail from '../pages/Projects/ProjectDetail/ProjectDetail';
 
 const AppRouter = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -25,6 +26,7 @@ const AppRouter = () => {
 
       <Route element={<ProtectedRoute />}>
         <Route path="/projects" element={<ProjectList />} />
+        <Route path="/projects/:projectId" element={<ProjectDetail />} />
       </Route>
     </Routes>
   );

@@ -1,0 +1,44 @@
+.group {
+  display: flex;
+  align-items: center;
+}
+
+.avatarWrapper {
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: #e2e8f0; /* slate 200 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* All but the first element negative margin to overlap */
+.avatarWrapper:not(:first-child), .overflowBadge {
+  margin-left: -8px;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallbackAvatar {
+  font-size: 10px;
+  font-weight: 700;
+  color: #475569; /* slate 600 */
+}
+
+.overflowBadge {
+  border-radius: 50%;
+  border: 2px solid white;
+  background-color: #94a3b8; /* slate 400 */
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}

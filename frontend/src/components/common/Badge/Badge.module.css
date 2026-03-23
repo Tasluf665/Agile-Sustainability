@@ -18,3 +18,28 @@
 .label {
   line-height: 1;
 }
+
+/* --- Variants --- */
+.success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-text);
+  border: none;
+}
+
+.warning {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-text);
+  border: none;
+}
+
+.info {
+  background-color: var(--color-info-bg);
+  color: var(--color-info-text);
+  border: none;
+}
+
+.primary {
+  background-color: rgba(28, 95, 32, 0.1);
+  color: var(--color-primary);
+  border: none;
+}

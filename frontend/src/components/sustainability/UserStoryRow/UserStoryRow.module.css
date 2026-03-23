@@ -1,0 +1,67 @@
+.rowWrapper {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 21px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 24px;
+  margin: 0;
+  padding-left: 4px; /* Slight separation from badges */
+}
+
+.actionsRow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.useCaseLink {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.useCaseCount {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+  line-height: 20px;
+}
+
+.assigneesBlock {
+  display: flex;
+  align-items: center;
+  padding-right: 8px; /* Room for overlap */
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
