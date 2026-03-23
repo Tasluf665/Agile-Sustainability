@@ -1,0 +1,184 @@
+.pageWrapper {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-bg-light);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  position: relative;
+}
+
+.blurTop {
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  background-color: rgba(28, 95, 32, 0.05);
+  filter: blur(50px);
+  border-radius: var(--radius-full);
+  z-index: 0;
+}
+
+.blurBottom {
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  background-color: rgba(75, 101, 70, 0.05);
+  filter: blur(40px);
+  border-radius: var(--radius-full);
+  z-index: 0;
+}
+
+.signUpCard {
+  width: 100%;
+  max-width: 448px;
+  background-color: var(--card-bg);
+  padding: 41px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  z-index: 1;
+}
+
+.branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.logoCircle {
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0px 10px 15px -3px rgba(28, 95, 32, 0.2), 0px 4px 6px -4px rgba(28, 95, 32, 0.2);
+}
+
+.logoCircle img {
+  width: 25.5px;
+  height: 25.5px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 900;
+  color: #191d17;
+  letter-spacing: -0.75px;
+  margin: 0;
+  margin-top: 15px;
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #41493e;
+  margin: 8px 0 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.passwordSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.footerLinkSection {
+  margin-top: 32px;
+  padding-top: 25px;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+}
+
+.signinText {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.signinLink {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pageFooter {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+  background-color: white;
+  z-index: 1;
+}
+
+.footerBranding {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+.footerLinks {
+  display: flex;
+  gap: 24px;
+}
+
+.footerLinks a {
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.footerLinks a:hover {
+  opacity: 1;
+}
+
+.footerCopyright {
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+@media (max-width: 900px) {
+  .pageFooter {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .footerLinks {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

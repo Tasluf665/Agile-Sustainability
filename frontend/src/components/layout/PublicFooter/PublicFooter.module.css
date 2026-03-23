@@ -1,0 +1,42 @@
+.pageFooter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  background-color: transparent;
+}
+
+.footerLeft {
+  font-weight: 500;
+}
+
+.footerRight {
+  display: flex;
+  gap: 24px;
+}
+
+.footerRight a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.footerRight a:hover {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .pageFooter {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 24px 16px;
+  }
+}

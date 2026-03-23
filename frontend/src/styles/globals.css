@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@import "./theme.css";
+
+@theme {
+  --color-primary: var(--color-primary);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-bg-light: var(--color-bg-light);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+}

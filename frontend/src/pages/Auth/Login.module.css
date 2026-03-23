@@ -1,0 +1,133 @@
+.pageWrapper {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-bg-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.loginCard {
+  background-color: var(--card-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 41px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logoCircle {
+  width: 64px;
+  height: 64px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  box-shadow: 0px 10px 15px -3px rgba(28, 95, 32, 0.2), 0px 4px 6px -4px rgba(28, 95, 32, 0.2);
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--color-primary);
+  margin: 0;
+  letter-spacing: -0.75px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.forgotPassword {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 33px;
+  text-align: center;
+}
+
+.signupText {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.signupLink {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pageFooter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+
+.footerLeft {
+  font-weight: 500;
+}
+
+.footerRight {
+  display: flex;
+  gap: 24px;
+}
+
+.footerRight a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.footerRight a:hover {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .pageFooter {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+}
