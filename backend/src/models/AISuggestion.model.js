@@ -4,12 +4,10 @@ const aiSuggestionSchema = new mongoose.Schema(
   {
     refId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       refPath: 'refType',
     },
     refType: {
       type: String,
-      required: true,
       enum: ['UserStory', 'UseCase'],
     },
     inputText: {

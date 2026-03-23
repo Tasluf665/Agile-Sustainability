@@ -55,11 +55,11 @@ const NewUserStory = () => {
   const handleAccept = () => {
     dispatch(createUserStory({
       projectId,
-      title: aiState.result.substring(0, 40) + '...',
+      title: aiState.result.description.substring(0, 40) + (aiState.result.description.length > 40 ? '...' : ''),
       description: description,
-      sustainableDescription: aiState.result,
+      sustainableDescription: aiState.result.description,
       status: 'DRAFT',
-      acceptanceCriteria: [] // Typically parsed from AI, leaving blank to use backend defaults or user input later
+      acceptanceCriteria: aiState.result.criteria || []
     })).then(() => {
       dispatch(clearAiSuggestion());
       navigate(`/projects/${projectId}`);
@@ -170,7 +170,7 @@ const NewUserStory = () => {
             <div className={styles.rightColumn}>
               <AISuggestionPanel 
                 status={status}
-                suggestion={aiState.result}
+                suggestion={aiState.result ? aiState.result.description : null}
                 onAccept={handleAccept}
                 onReject={handleReject}
                 usageCount={12}

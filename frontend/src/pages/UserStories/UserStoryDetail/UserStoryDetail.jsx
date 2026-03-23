@@ -120,7 +120,8 @@ const UserStoryDetail = () => {
 
     // State 3: Generated (before accepting OR after accepting) - For this task, the mock data has `sustainableDescription`
     // aiState.result will override mock data if newly generated.
-    const sustainableDesc = aiState.result || currentStory?.sustainableDescription;
+    const sustainableDesc = aiState.result?.description || currentStory?.sustainableDescription;
+    const criteria = aiState.result?.criteria || currentStory?.acceptanceCriteria;
 
     if (sustainableDesc) {
       const isApproved = currentStory.status === 'APPROVED';
@@ -129,7 +130,7 @@ const UserStoryDetail = () => {
           <SustainableVersionPanel
             description={sustainableDesc}
             focusArea={currentStory.focusArea}
-            acceptanceCriteria={currentStory.acceptanceCriteria}
+            acceptanceCriteria={criteria}
             onAccept={handleAccept}
             onReject={handleReject}
             isAccepting={false} // Would add if there was an accepting thunk loading state

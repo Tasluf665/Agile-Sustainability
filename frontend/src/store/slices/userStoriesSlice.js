@@ -43,9 +43,19 @@ export const fetchUserStoryById = createAsyncThunk(
 
 export const generateSustainableStory = createAsyncThunk(
   'userStories/generateSustainableStory',
-  async (originalDescription) => {
-    await new Promise(resolve => setTimeout(resolve, 1500)); 
-    return `Enhanced sustainable version of: ${originalDescription}\n\nKey additions:\n- Measured energy reduction targets\n- Optimized data transfer constraints\n- Cloud compute scheduling during off-peak hours`;
+  async (originalDescription, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/ai/generate-user-story', {
+        originalDescription
+      });
+      // Return the object containing sustainableDescription and acceptanceCriteria
+      return {
+        description: response.data.sustainableDescription,
+        criteria: response.data.acceptanceCriteria || []
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
   }
 );
 
@@ -71,12 +81,17 @@ export const acceptSustainableStory = createAsyncThunk(
   async (storyId, { getState, rejectWithValue }) => {
     try {
       const state = getState();
-      const sustainableDescription = state.userStories.aiSuggestion.result 
+      const aiResult = state.userStories.aiSuggestion.result;
+      
+      const sustainableDescription = aiResult?.description 
         || state.userStories.currentStory?.sustainableDescription;
+        
+      const acceptanceCriteria = aiResult?.criteria 
+        || state.userStories.currentStory?.acceptanceCriteria || [];
 
       await api.post(`/user-stories/${storyId}/sustainable`, {
         sustainableDescription,
-        acceptanceCriteria: []
+        acceptanceCriteria
       });
       
       const updateRes = await api.put(`/user-stories/${storyId}`, { status: 'APPROVED' });
