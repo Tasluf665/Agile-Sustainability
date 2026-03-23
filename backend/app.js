@@ -22,8 +22,12 @@ if (config.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Routes Placeholder
-app.get('/api/health', (req, res) => {
+// Mount Routes
+import indexRoutes from './src/routes/index.js';
+app.use('/api', indexRoutes);
+
+// Health Check
+app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'GreenStory Backend is running' });
 });
 
