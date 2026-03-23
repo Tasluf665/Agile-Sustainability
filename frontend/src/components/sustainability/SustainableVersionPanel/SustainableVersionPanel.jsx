@@ -7,7 +7,8 @@ import styles from './SustainableVersionPanel.module.css';
 const SustainableVersionPanel = ({ 
   description, 
   focusArea, 
-  acceptanceCriteria, 
+  acceptanceCriteria,
+  co2ImpactNote,
   onAccept, 
   onReject, 
   isAccepting,
@@ -21,7 +22,7 @@ const SustainableVersionPanel = ({
           <h2 className={styles.title}>Sustainable Version</h2>
         </div>
         <div className={styles.badgeWrapper}>
-          <Badge text={focusArea || 'ENERGY EFFICIENCY'} color="success" size="sm" className={styles.focusBadge} />
+          <Badge text={focusArea ? focusArea.replace(/_/g, ' ') : 'ENERGY EFFICIENCY'} color="success" size="sm" className={styles.focusBadge} />
         </div>
       </div>
 
@@ -39,6 +40,13 @@ const SustainableVersionPanel = ({
             ))}
           </ul>
         </div>
+        
+        {co2ImpactNote && (
+            <div style={{ marginTop: '16px', fontSize: '13px', color: '#64748b', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <Leaf size={14} style={{ flexShrink: 0, marginTop: '2px', color: '#10b981' }} />
+                <span>{co2ImpactNote}</span>
+            </div>
+        )}
       </div>
 
       {!readonly && (

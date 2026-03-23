@@ -10,6 +10,8 @@ const AISuggestionPanel = ({
   status = 'waiting',
   suggestion = '',
   acceptanceCriteria = [],
+  focusArea = 'ENERGY EFFICIENCY',
+  co2ImpactNote = '',
   onAccept,
   onReject,
   usageCount = 12,
@@ -65,7 +67,7 @@ const AISuggestionPanel = ({
                         <Leaf size={16} className={styles.resultHeaderIcon} />
                         <h4 className={styles.resultHeaderTitle}>Sustainable Version</h4>
                     </div>
-                    <Badge text="ENERGY EFFICIENCY" color="success" size="sm" />
+                    <Badge text={focusArea ? focusArea.replace(/_/g, ' ') : 'ENERGY EFFICIENCY'} color="success" size="sm" />
                 </div>
                 
                 <div className={styles.resultContentBox}>
@@ -99,6 +101,12 @@ const AISuggestionPanel = ({
                             )}
                         </ul>
                     </div>
+                    {co2ImpactNote && (
+                        <div style={{ marginTop: '16px', fontSize: '13px', color: '#64748b', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                            <Leaf size={14} style={{ flexShrink: 0, marginTop: '2px', color: '#10b981' }} />
+                            <span>{co2ImpactNote}</span>
+                        </div>
+                    )}
                 </div>
                 
                 <div className={styles.resultActions}>

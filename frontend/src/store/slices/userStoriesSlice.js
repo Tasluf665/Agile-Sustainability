@@ -48,10 +48,13 @@ export const generateSustainableStory = createAsyncThunk(
       const response = await api.post('/ai/generate-user-story', {
         originalDescription
       });
-      // Return the object containing sustainableDescription and acceptanceCriteria
+      // Return the object containing the new fields from the openrouter prompt
       return {
-        description: response.data.sustainableDescription,
-        criteria: response.data.acceptanceCriteria || []
+        description: response.data.sustainableStory,
+        criteria: response.data.acceptanceCriteria || [],
+        focusArea: response.data.focusArea,
+        co2ImpactNote: response.data.co2ImpactNote,
+        dimension: response.data.dimension
       };
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);

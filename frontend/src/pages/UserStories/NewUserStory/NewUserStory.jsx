@@ -171,6 +171,9 @@ const NewUserStory = () => {
               <AISuggestionPanel 
                 status={status}
                 suggestion={aiState.result ? aiState.result.description : null}
+                acceptanceCriteria={aiState.result ? aiState.result.criteria : []}
+                focusArea={aiState.result ? aiState.result.focusArea : 'ENERGY EFFICIENCY'}
+                co2ImpactNote={aiState.result ? aiState.result.co2ImpactNote : ''}
                 onAccept={handleAccept}
                 onReject={handleReject}
                 usageCount={12}
