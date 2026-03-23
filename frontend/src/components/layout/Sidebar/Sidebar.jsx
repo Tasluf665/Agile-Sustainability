@@ -3,7 +3,7 @@ import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../store/slices/authSlice';
 import { LayoutDashboard, Briefcase, Settings, ChevronDown, ChevronRight, User, LogOut } from 'lucide-react';
-import leafIcon from '../../../assets/icons/leaf.svg';
+import leafIcon from '../../../assets/icons/leaf-primary.svg';
 import styles from './Sidebar.module.css';
 
 const Sidebar = ({ projects = [] }) => {
@@ -46,7 +46,9 @@ const Sidebar = ({ projects = [] }) => {
               <Briefcase size={20} />
               <span>Projects</span>
             </div>
-            {isProjectsExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+            <div style={{ marginLeft: 'auto', display: 'flex' }}>
+              {isProjectsExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+            </div>
           </button>
           
           {isProjectsExpanded && (
