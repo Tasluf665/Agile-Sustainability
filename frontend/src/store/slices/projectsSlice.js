@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../../services/api';
 
 const initialState = {
   projects: [],
@@ -7,39 +8,41 @@ const initialState = {
   error: null,
 };
 
+// Helper to map backend project to frontend structure
+const formatProject = (project) => ({
+  id: project._id,
+  name: project.name,
+  industry: project.industry,
+  description: project.description,
+  sustainabilityGoals: project.sustainabilityGoals,
+  focusAreas: project.focusAreas.map(area => ({
+    label: area,
+    color: getFocusAreaColor(area)
+  })),
+  userStoriesCount: project.userStoriesCount || 0,
+  useCasesCount: project.useCasesCount || 0,
+  createdAt: project.createdAt
+});
+
+const getFocusAreaColor = (area) => {
+  const colors = {
+    'ENERGY': '#10b981',
+    'WATER': '#3b82f6',
+    'WASTE': '#ef4444',
+    'DATA': '#8b5cf6',
+    'LOGISTICS': '#f59e0b',
+    'LIFECYCLE': '#6366f1'
+  };
+  return colors[area] || '#64748b';
+};
+
 export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
   async (_, { rejectWithValue }) => {
     try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      return [
-        {
-          id: '1',
-          name: 'Video Streaming Platform',
-          industry: 'Tech',
-          description: 'Optimizing data transfer for sustainable streaming...',
-          focusAreas: [
-            { label: 'ENERGY', color: '#10b981' },
-            { label: 'DATA', color: '#3b82f6' }
-          ],
-          userStoriesCount: 12,
-          useCasesCount: 5
-        },
-        {
-          id: '2',
-          name: 'E-commerce Engine',
-          industry: 'Retail',
-          description: 'Circular logistics and packaging reduction strategies...',
-          focusAreas: [
-            { label: 'LOGISTICS', color: '#f59e0b' },
-            { label: 'LIFECYCLE', color: '#6366f1' }
-          ],
-          userStoriesCount: 8,
-          useCasesCount: 3
-        }
-      ];
+      const response = await api.get('/projects');
+      // Backend returns { success: true, count: X, data: [...] }
+      return response.data.data.map(formatProject);
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -50,15 +53,18 @@ export const createProject = createAsyncThunk(
   'projects/createProject',
   async (projectData, { rejectWithValue }) => {
     try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      return {
-        id: Date.now().toString(),
-        ...projectData,
-        userStoriesCount: 0,
-        useCasesCount: 0
+      // projectData from form uses { name, industry, description, goals, focusAreas }
+      // Backend expects { name, industry, description, sustainabilityGoals, focusAreas }
+      const payload = {
+        name: projectData.name,
+        industry: projectData.industry,
+        description: projectData.description,
+        sustainabilityGoals: projectData.goals,
+        focusAreas: projectData.focusAreas
       };
+      
+      const response = await api.post('/projects', payload);
+      return formatProject(response.data.data);
     } catch (error) {
       return rejectWithValue(error.message);
     }

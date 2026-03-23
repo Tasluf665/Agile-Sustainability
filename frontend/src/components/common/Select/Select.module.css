@@ -7,8 +7,8 @@
 
 .label {
   font-size: 14px;
-  font-weight: 700;
-  color: var(--color-header-text);
+  font-weight: 600;
+  color: #334155;
 }
 
 .selectWrapper {
@@ -18,14 +18,14 @@
 
 .select {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  background-color: white;
+  padding: 11px 16px;
+  border: 1px solid rgba(28, 95, 32, 0.2);
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: rgba(28, 95, 32, 0.05);
   appearance: none;
   cursor: pointer;
-  color: var(--color-header-text);
+  color: #0f172a;
   transition: border-color 0.2s;
 }
 

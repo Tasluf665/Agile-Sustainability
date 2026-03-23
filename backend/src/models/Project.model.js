@@ -21,7 +21,7 @@ const projectSchema = new mongoose.Schema(
     },
     focusAreas: {
       type: [String],
-      enum: ['ENERGY', 'WATER', 'WASTE', 'DATA', 'LOGISTICS', 'LIFECYCLE'],
+      enum: ['ENERGY', 'WATER', 'WASTE', 'DATA', 'LOGISTICS', 'LIFECYCLE', 'CARBON'],
       default: [],
     },
     createdBy: {

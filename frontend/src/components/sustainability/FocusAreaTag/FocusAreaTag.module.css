@@ -1,29 +1,31 @@
 .tag {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 100px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  background-color: transparent;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
-}
-
-.tag:hover {
-  border-color: var(--color-primary);
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: none;
+  background-color: rgba(28, 95, 32, 0.1);
   color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .selected {
   background-color: var(--color-primary);
-  border-color: var(--color-primary);
   color: white !important;
+}
+
+.selected .icon {
+  color: white;
 }
 
 .icon {
   flex-shrink: 0;
+}
+
+.label {
+  line-height: 20px;
 }

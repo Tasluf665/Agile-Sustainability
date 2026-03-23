@@ -39,14 +39,15 @@ const ProjectList = () => {
 
     return (
       <div className={styles.grid}>
+        <CreateProjectCard onClick={() => setIsModalOpen(true)} />
         {projects.map((project) => (
-          <ProjectCard 
-            key={project.id} 
-            project={project} 
+          <ProjectCard
+            key={project.id}
+            project={project}
             onOpen={() => handleOpenProject(project.id)}
           />
         ))}
-        <CreateProjectCard onClick={() => setIsModalOpen(true)} />
+
       </div>
     );
   };
@@ -54,7 +55,7 @@ const ProjectList = () => {
   return (
     <AppShell>
       <div className={styles.container}>
-        <PageHeader 
+        <PageHeader
           title="Projects"
           subtitle="Manage and track your sustainable development goals."
           actions={
@@ -67,9 +68,9 @@ const ProjectList = () => {
 
         {renderContent()}
 
-        <CreateProjectModal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
+        <CreateProjectModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
         />
       </div>
     </AppShell>

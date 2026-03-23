@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import styles from './Modal.module.css';
 
-const Modal = ({ isOpen, onClose, title, children }) => {
+const Modal = ({ isOpen, onClose, title, icon: Icon, children }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -20,7 +20,10 @@ const Modal = ({ isOpen, onClose, title, children }) => {
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.container} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
+          <div className={styles.titleWrapper}>
+            {Icon && <Icon size={20} className={styles.titleIcon} />}
+            <h2 className={styles.title}>{title}</h2>
+          </div>
           <button className={styles.closeButton} onClick={onClose}>
             <X size={20} />
           </button>

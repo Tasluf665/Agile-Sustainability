@@ -7,18 +7,18 @@
 
 .label {
   font-size: 14px;
-  font-weight: 700;
-  color: var(--color-header-text);
+  font-weight: 600;
+  color: #334155;
 }
 
 .textarea {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  background-color: transparent;
-  color: var(--color-header-text);
+  padding: 11px 13px;
+  border: 1px solid rgba(28, 95, 32, 0.2);
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: rgba(28, 95, 32, 0.05);
+  color: #0f172a;
   resize: vertical;
   transition: border-color 0.2s;
   font-family: inherit;
