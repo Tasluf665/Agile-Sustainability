@@ -1,0 +1,164 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  margin: -32px -48px;
+  height: calc(100% + 64px);
+  background-color: #f6f8f6;
+  overflow: hidden;
+}
+
+.headerWrapper {
+  background-color: white;
+  border-bottom: 1px solid rgba(28, 95, 32, 0.1);
+  padding: 16px 32px 17px 32px;
+  z-index: 2;
+}
+
+.breadcrumbLinkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumbMuted {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(28, 95, 32, 0.6);
+  text-decoration: none;
+}
+
+.breadcrumbMuted:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbChevron {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: rgba(28, 95, 32, 0.6);
+}
+
+.breadcrumbActive {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-slate-900, #0f172a);
+}
+
+.contentWrapper {
+  flex: 1 1 0%;
+  padding: 32px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.splitLayout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  width: 100%;
+  max-width: 1152px;
+}
+
+@media (max-width: 1024px) {
+  .splitLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.leftPanel {
+  background-color: white;
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panelHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.panelTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--color-slate-900, #0f172a);
+  margin: 0;
+}
+
+.panelSubtitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-slate-500, #64748b);
+  margin: 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.inputLabel {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-slate-700, #334155);
+}
+
+.generateActionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tipsRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 24px;
+}
+
+.tipIcon {
+  color: var(--color-slate-400, #94a3b8);
+}
+
+.tipText {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-slate-400, #94a3b8);
+  text-align: center;
+}
+
+.infoBoxWrapper {
+  width: 100%;
+}
+
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+}

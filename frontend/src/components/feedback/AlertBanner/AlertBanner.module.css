@@ -1,0 +1,90 @@
+.alertContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.alertTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+
+.alertMessage {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+}
+
+/* Info Variant */
+.info {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+.iconInfo {
+  color: #3b82f6;
+}
+.info .alertTitle {
+  color: #1e3a8a;
+}
+.info .alertMessage {
+  color: #1e40af;
+}
+
+/* Error Variant */
+.error {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+}
+.iconError {
+  color: #ef4444;
+}
+.error .alertTitle {
+  color: #7f1d1d;
+}
+.error .alertMessage {
+  color: #991b1b;
+}
+
+/* Success Variant */
+.success {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+}
+.iconSuccess {
+  color: #22c55e;
+}
+.success .alertTitle {
+  color: #14532d;
+}
+.success .alertMessage {
+  color: #166534;
+}
+
+/* Warning Variant */
+.warning {
+  background-color: #fffbeb;
+  border-color: #fde68a;
+}
+.iconWarning {
+  color: #f59e0b;
+}
+.warning .alertTitle {
+  color: #78350f;
+}
+.warning .alertMessage {
+  color: #92400e;
+}

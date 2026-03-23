@@ -25,7 +25,6 @@ import {
   selectActiveUserStories
 } from '../../../store/selectors/storySelectors';
 import { toggleModal } from '../../../store/slices/uiSlice';
-import NewUserStoryModal from '../../UserStories/NewUserStory/NewUserStoryModal';
 
 const TABS = [
   { label: 'Overview', value: 'overview' },
@@ -54,7 +53,6 @@ const ProjectDetail = () => {
   const activityFeed = useSelector(state => state.activity.items);
   const chartData = useSelector(state => state.analytics.sustainabilityScores);
   const isStoriesLoading = useSelector(state => state.userStories.isLoading);
-  const isModalOpen = useSelector(state => state.ui.modals.newUserStory);
 
   useEffect(() => {
     // We fetch project list if missing to populate title. 
@@ -67,11 +65,7 @@ const ProjectDetail = () => {
   }, [dispatch, projectId, project]);
 
   const handleAddUserStory = () => {
-    dispatch(toggleModal({ modalName: 'newUserStory', isOpen: true }));
-  };
-
-  const handleCloseModal = () => {
-    dispatch(toggleModal({ modalName: 'newUserStory', isOpen: false }));
+    navigate(`/projects/${projectId}/user-stories/new`);
   };
 
   const handleViewStory = (storyId) => {
@@ -186,8 +180,6 @@ const ProjectDetail = () => {
         <div className={styles.scrollableContent}>
           {activeTab === 'overview' ? renderOverviewTab() : renderEmptyTab(TABS.find(t => t.value === activeTab)?.label)}
         </div>
-
-        {isModalOpen && <NewUserStoryModal onClose={handleCloseModal} projectId={projectId} />}
       </div>
     </AppShell>
   );

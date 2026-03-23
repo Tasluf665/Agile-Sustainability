@@ -1,0 +1,135 @@
+.panelContainer {
+  background-color: white;
+  border: 2px solid rgba(28, 95, 32, 0.3);
+  border-radius: 12px;
+  padding: 26px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleIcon {
+  color: var(--color-primary-green, #1c5f20);
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--color-primary-green, #1c5f20);
+  margin: 0;
+}
+
+.focusBadge {
+  background-color: rgba(28, 95, 32, 0.1);
+  color: var(--color-primary-green, #1c5f20);
+  border: 1px solid rgba(28, 95, 32, 0.2);
+  border-radius: 9999px;
+  padding: 3px 9px;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.contentBox {
+  background-color: rgba(28, 95, 32, 0.05);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: 8px;
+  padding: 21px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.descriptionText {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #1e293b;
+  margin: 0;
+}
+
+.criteriaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.criteriaTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(28, 95, 32, 0.7);
+  margin: 0;
+}
+
+.criteriaList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.criteriaItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.checkIcon {
+  color: var(--color-primary-green, #1c5f20);
+  margin-top: 2px;
+}
+
+.criteriaItem span {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #334155;
+}
+
+.actionsBox {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+.acceptButton {
+  border-radius: 8px;
+  padding: 10.5px 16px;
+  font-weight: 700;
+  width: 201px;
+}
+
+.rejectButton {
+  border-radius: 8px;
+  padding: 11px 16px;
+  font-weight: 700;
+  color: #475569;
+  border-color: #e2e8f0;
+  width: 203px;
+}

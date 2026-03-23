@@ -1,74 +1,101 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../../services/api';
 
-// Mock data matching the design
-const MOCK_STORIES = [
-  {
-    id: '1',
-    projectId: 'demo-1',
-    title: 'Optimize Video Encoding for Mobile Devices',
-    focusArea: 'ENERGY',
-    status: 'ACCEPTED',
-    useCaseCount: 3,
-    assignees: [
-      { name: 'Alice', avatarUrl: 'https://i.pravatar.cc/150?u=1' },
-      { name: 'Bob', avatarUrl: 'https://i.pravatar.cc/150?u=2' }
-    ]
-  },
-  {
-    id: '2',
-    projectId: 'demo-1',
-    title: 'Server Migration to Green Data Centers',
-    focusArea: 'CARBON',
-    status: 'PENDING REVIEW',
-    useCaseCount: 1,
-    assignees: [
-      { name: 'Charlie', avatarUrl: 'https://i.pravatar.cc/150?u=3' }
-    ]
-  },
-  {
-    id: '3',
-    projectId: 'demo-1',
-    title: 'Automated Deletion of Stale Media Assets',
-    focusArea: 'WASTE',
-    status: 'IN PROGRESS',
-    useCaseCount: 5,
-    assignees: [
-      { name: 'David', avatarUrl: 'https://i.pravatar.cc/150?u=4' },
-      { name: 'Eve', avatarUrl: 'https://i.pravatar.cc/150?u=5' },
-      { name: 'Frank', avatarUrl: 'https://i.pravatar.cc/150?u=6' },
-      { name: 'Grace', avatarUrl: 'https://i.pravatar.cc/150?u=7' }
-    ]
-  }
-];
+const formatStory = (story) => ({
+  id: story._id,
+  projectId: story.projectId,
+  title: story.originalDescription ? story.originalDescription.substring(0, 50) + (story.originalDescription.length > 50 ? '...' : '') : 'Untitled Story',
+  description: story.originalDescription,
+  originalDescription: story.originalDescription,
+  sustainableDescription: story.sustainableDescription,
+  acceptanceCriteria: story.acceptanceCriteria || [],
+  priority: story.priority,
+  feature: story.feature,
+  status: story.status,
+  focusArea: 'ENERGY EFFICIENCY',
+  useCaseCount: 0,
+  assignees: story.createdBy ? [{ name: story.createdBy.name, avatarUrl: 'https://i.pravatar.cc/150?u=' + story.createdBy._id }] : []
+});
 
 export const fetchUserStoriesByProject = createAsyncThunk(
   'userStories/fetchUserStoriesByProject',
-  async (projectId) => {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    return MOCK_STORIES;
+  async (projectId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/user-stories?projectId=${projectId}`);
+      return response.data.map(formatStory);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const fetchUserStoryById = createAsyncThunk(
+  'userStories/fetchUserStoryById',
+  async ({ projectId, storyId }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/user-stories/${storyId}`);
+      return formatStory(response.data);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
   }
 );
 
 export const generateSustainableStory = createAsyncThunk(
   'userStories/generateSustainableStory',
   async (originalDescription) => {
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate AI generation
+    await new Promise(resolve => setTimeout(resolve, 1500)); 
     return `Enhanced sustainable version of: ${originalDescription}\n\nKey additions:\n- Measured energy reduction targets\n- Optimized data transfer constraints\n- Cloud compute scheduling during off-peak hours`;
   }
 );
 
 export const createUserStory = createAsyncThunk(
   'userStories/createUserStory',
-  async (payload) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return {
-      id: Date.now().toString(),
-      ...payload,
-      status: 'DRAFT',
-      focusArea: 'ENERGY',
-      useCaseCount: 0,
-      assignees: []
-    };
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/user-stories', {
+        projectId: payload.projectId,
+        originalDescription: payload.description,
+        priority: payload.priority || 'MEDIUM',
+        feature: payload.feature || ''
+      });
+      return formatStory(response.data);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const acceptSustainableStory = createAsyncThunk(
+  'userStories/acceptSustainableStory',
+  async (storyId, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const sustainableDescription = state.userStories.aiSuggestion.result 
+        || state.userStories.currentStory?.sustainableDescription;
+
+      await api.post(`/user-stories/${storyId}/sustainable`, {
+        sustainableDescription,
+        acceptanceCriteria: []
+      });
+      
+      const updateRes = await api.put(`/user-stories/${storyId}`, { status: 'APPROVED' });
+      return formatStory(updateRes.data);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const rejectSustainableStory = createAsyncThunk(
+  'userStories/rejectSustainableStory',
+  async (storyId, { rejectWithValue }) => {
+    try {
+      const updateRes = await api.put(`/user-stories/${storyId}`, { status: 'DRAFT' });
+      return formatStory(updateRes.data);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
   }
 );
 
@@ -76,6 +103,7 @@ const userStoriesSlice = createSlice({
   name: 'userStories',
   initialState: {
     items: [],
+    currentStory: null,
     isLoading: false,
     error: null,
     aiSuggestion: {
@@ -101,7 +129,7 @@ const userStoriesSlice = createSlice({
       })
       .addCase(fetchUserStoriesByProject.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(generateSustainableStory.pending, (state) => {
         state.aiSuggestion.isGenerating = true;
@@ -117,6 +145,35 @@ const userStoriesSlice = createSlice({
       })
       .addCase(createUserStory.fulfilled, (state, action) => {
         state.items.unshift(action.payload);
+      })
+      .addCase(fetchUserStoryById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchUserStoryById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentStory = action.payload;
+      })
+      .addCase(fetchUserStoryById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(acceptSustainableStory.fulfilled, (state, action) => {
+        if (state.currentStory && state.currentStory.id === action.payload.id) {
+          state.currentStory = action.payload;
+        }
+        const index = state.items.findIndex(s => s.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(rejectSustainableStory.fulfilled, (state, action) => {
+        if (state.currentStory && state.currentStory.id === action.payload.id) {
+          state.currentStory = action.payload;
+        }
+        const index = state.items.findIndex(s => s.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
       });
   },
 });

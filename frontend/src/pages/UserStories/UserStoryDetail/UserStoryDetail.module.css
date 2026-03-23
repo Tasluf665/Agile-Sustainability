@@ -1,0 +1,167 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  margin: -32px -48px;
+  height: calc(100% + 64px);
+  background-color: #f6f8f6;
+  overflow: hidden;
+}
+
+.headerWrapper {
+  background-color: white;
+  border-bottom: 1px solid rgba(28, 95, 32, 0.1);
+  padding: 16px 32px 17px 32px;
+  z-index: 2;
+}
+
+.breadcrumbLinkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.backLink {
+  color: var(--color-slate-500, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  color: var(--color-slate-900, #0f172a);
+}
+
+.breadcrumbMuted {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(28, 95, 32, 0.6);
+  text-decoration: none;
+}
+
+.breadcrumbMuted:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbChevron {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: rgba(28, 95, 32, 0.6);
+}
+
+.breadcrumbActive {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-slate-900, #0f172a);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatarCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarFallback {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.contentWrapper {
+  flex: 1 1 0%;
+  padding: 32px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.panelsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .panelsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftPanelWrapper, .rightPanelWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.rightPanelWrapper {
+  gap: 16px; 
+}
+
+.useCasesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 16px;
+}
+
+.useCasesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+}
+
+.useCasesTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--color-slate-900, #0f172a);
+  margin: 0;
+}
+
+.useCasesList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.emptyUseCases {
+  background-color: white;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  color: #64748b;
+  font-size: 14px;
+}
