@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, Briefcase, Settings, ChevronDown, ChevronRight, User } from 'lucide-react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../../store/slices/authSlice';
+import { LayoutDashboard, Briefcase, Settings, ChevronDown, ChevronRight, User, LogOut } from 'lucide-react';
 import leafIcon from '../../../assets/icons/leaf.svg';
 import styles from './Sidebar.module.css';
 
 const Sidebar = ({ projects = [] }) => {
   const [isProjectsExpanded, setIsProjectsExpanded] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
 
   return (
     <aside className={styles.sidebar}>
@@ -64,13 +74,22 @@ const Sidebar = ({ projects = [] }) => {
       </nav>
 
       <div className={styles.profileSection}>
-        <div className={styles.avatar}>
-          <User size={24} color="#1C5F20" />
+        <div className={styles.profileMain}>
+          <div className={styles.avatar}>
+            <User size={24} color="#1C5F20" />
+          </div>
+          <div className={styles.profileInfo}>
+            <p className={styles.profileName}>{user?.name || 'Admin User'}</p>
+            <p className={styles.profileRole}>{user?.role || 'Sustainability Lead'}</p>
+          </div>
         </div>
-        <div className={styles.profileInfo}>
-          <p className={styles.profileName}>Admin User</p>
-          <p className={styles.profileRole}>Sustainability Lead</p>
-        </div>
+        <button 
+          onClick={handleLogout} 
+          className={styles.logoutButton}
+          title="Logout"
+        >
+          <LogOut size={20} />
+        </button>
       </div>
     </aside>
   );

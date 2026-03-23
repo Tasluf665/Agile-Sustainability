@@ -1,22 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../../utils/api';
 
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      if (credentials.email === 'admin@greenstory.com' && credentials.password === 'password') {
-        return {
-          user: { id: 1, name: 'Admin User', email: credentials.email },
-          token: 'mock-jwt-token',
-        };
-      } else {
-        return rejectWithValue('Invalid email or password');
-      }
+      const data = await api('/auth/login', { body: credentials });
+      localStorage.setItem('token', data.token);
+      return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -25,16 +18,19 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Simple mock: succeed for any new email
-      return {
-        user: { id: Date.now(), name: userData.fullName, email: userData.email },
-        token: 'mock-jwt-token-register',
+      // Map fullName from frontend to name for backend
+      const mappedData = {
+        name: userData.fullName,
+        email: userData.email,
+        password: userData.password,
+        organization: userData.organization || 'None'
       };
+      
+      const data = await api('/auth/register', { body: mappedData });
+      localStorage.setItem('token', data.token);
+      return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -43,21 +39,31 @@ export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email, { rejectWithValue }) => {
     try {
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Success for any valid-looking email
-      return { message: 'Reset link sent successfully' };
+      const data = await api('/auth/forgot-password', { body: { email } });
+      return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getMe = createAsyncThunk(
+  'auth/getMe',
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api('/auth/me');
+      return data;
+    } catch (error) {
+      localStorage.removeItem('token');
+      return rejectWithValue(error);
     }
   }
 );
 
 const initialState = {
   user: null,
-  token: null,
-  isAuthenticated: false,
+  token: localStorage.getItem('token') || null,
+  isAuthenticated: !!localStorage.getItem('token'),
   loading: false,
   error: null,
 };
@@ -76,6 +82,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      localStorage.removeItem('token');
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -124,6 +131,20 @@ const authSlice = createSlice({
       .addCase(forgotPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      })
+      .addCase(getMe.rejected, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
       });
   },
 });

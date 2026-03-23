@@ -41,6 +41,7 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
 
     // Validate email & password
     if (!email || !password) {
@@ -66,6 +67,28 @@ export const login = async (req, res, next) => {
     res.status(200).json({
       success: true,
       token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        organization: user.organization
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get current logged in user
+// @route   GET /api/auth/me
+// @access  Private
+export const getMe = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    res.status(200).json({
+      success: true,
       user: {
         id: user._id,
         name: user.name,
