@@ -1,33 +1,46 @@
 import User from '../models/User.model.js';
-import { generateToken } from '../utils/jwt.utils.js';
+import Token from '../models/Token.model.js';
+import { generateToken, generateRefreshToken } from '../utils/jwt.utils.js';
 
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password, organization, role } = req.body;
+    const { name, email, password, organization, role, avatarUrl } = req.body;
 
     // Create user
     const user = await User.create({
-      name,
+      fullName: name,
       email,
-      password,
+      passwordHash: password,
       organization,
-      role
+      role,
+      avatarUrl,
     });
 
-    const token = generateToken(user._id);
+    const accessToken = generateToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    // Save refresh token to database
+    await Token.create({
+      userId: user._id,
+      token: refreshToken,
+      type: 'REFRESH',
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 days (should match JWT_REFRESH_EXPIRE)
+    });
 
     res.status(201).json({
       success: true,
-      token,
+      token: accessToken,
+      refreshToken,
       user: {
         id: user._id,
-        name: user.name,
+        name: user.fullName,
         email: user.email,
         role: user.role,
-        organization: user.organization
+        organization: user.organization,
+        avatarUrl: user.avatarUrl,
       }
     });
   } catch (error) {
@@ -49,7 +62,7 @@ export const login = async (req, res, next) => {
     }
 
     // Check for user
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select('+passwordHash');
 
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
@@ -62,14 +75,24 @@ export const login = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
-    const token = generateToken(user._id);
+    const accessToken = generateToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
+
+    // Save refresh token to database
+    await Token.create({
+      userId: user._id,
+      token: refreshToken,
+      type: 'REFRESH',
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    });
 
     res.status(200).json({
       success: true,
-      token,
+      token: accessToken,
+      refreshToken,
       user: {
         id: user._id,
-        name: user.name,
+        name: user.fullName,
         email: user.email,
         role: user.role,
         organization: user.organization
@@ -91,7 +114,7 @@ export const getMe = async (req, res, next) => {
       success: true,
       user: {
         id: user._id,
-        name: user.name,
+        name: user.fullName,
         email: user.email,
         role: user.role,
         organization: user.organization
