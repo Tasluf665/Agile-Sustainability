@@ -15,6 +15,7 @@ const projectMemberSchema = new mongoose.Schema(
     role: {
       type: String,
       required: true,
+      enum: ['product_owner', 'editor', 'viewer'],
       default: 'viewer',
     },
     joinedAt: {
