@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { PlusCircle, ArrowLeft } from 'lucide-react';
+import { PlusCircle, ArrowLeft, Trash2 } from 'lucide-react';
 import AppShell from '../../../components/layout/AppShell/AppShell';
 import PageHeader from '../../../components/layout/PageHeader/PageHeader';
 import Button from '../../../components/common/Button/Button';
@@ -9,7 +9,13 @@ import Badge from '../../../components/common/Badge/Badge';
 import SkeletonCard from '../../../components/common/SkeletonCard/SkeletonCard';
 import AlertBanner from '../../../components/feedback/AlertBanner/AlertBanner';
 
-import { fetchUserStoryById, generateSustainableStory, acceptSustainableStory, rejectSustainableStory } from '../../../store/slices/userStoriesSlice';
+import { 
+  fetchUserStoryById, 
+  generateSustainableStory, 
+  acceptSustainableStory, 
+  rejectSustainableStory,
+  deleteUserStory
+} from '../../../store/slices/userStoriesSlice';
 import { fetchUseCasesByStory } from '../../../store/slices/useCasesSlice';
 import { fetchProjects } from '../../../store/slices/projectsSlice';
 
@@ -66,6 +72,14 @@ const UserStoryDetail = () => {
   const handleViewUseCase = (useCaseId) => {
     navigate(`/projects/${projectId}/user-stories/${storyId}/use-cases/${useCaseId}`);
   };
+  
+  const handleDeleteStory = () => {
+    if (window.confirm('Are you sure you want to delete this user story? This action cannot be undone.')) {
+      dispatch(deleteUserStory({ projectId, storyId })).then(() => {
+        navigate(`/projects/${projectId}`);
+      });
+    }
+  };
 
   // Build the Header actions and title
   const getBadgeColor = (status) => {
@@ -95,7 +109,13 @@ const UserStoryDetail = () => {
   const HeaderActions = currentStory ? (
     <div className={styles.headerActions}>
       <Badge text={currentStory.status.replace('_', ' ')} color={getBadgeColor(currentStory.status)} size="md" />
-
+      <Button 
+        variant="outline" 
+        onClick={handleDeleteStory}
+        className={styles.deleteButton}
+      >
+        <Trash2 size={16} />
+      </Button>
     </div>
   ) : null;
 

@@ -124,6 +124,18 @@ export const rejectSustainableStory = createAsyncThunk(
   }
 );
 
+export const deleteUserStory = createAsyncThunk(
+  'userStories/deleteUserStory',
+  async ({ projectId, storyId }, { rejectWithValue }) => {
+    try {
+      await api.delete(`/user-stories/${storyId}`);
+      return { storyId };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const userStoriesSlice = createSlice({
   name: 'userStories',
   initialState: {
@@ -198,6 +210,12 @@ const userStoriesSlice = createSlice({
         const index = state.items.findIndex(s => s.id === action.payload.id);
         if (index !== -1) {
           state.items[index] = action.payload;
+        }
+      })
+      .addCase(deleteUserStory.fulfilled, (state, action) => {
+        state.items = state.items.filter(s => s.id !== action.payload.storyId);
+        if (state.currentStory && state.currentStory.id === action.payload.storyId) {
+          state.currentStory = null;
         }
       });
   },

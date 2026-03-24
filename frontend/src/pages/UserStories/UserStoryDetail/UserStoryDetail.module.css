@@ -66,6 +66,20 @@
   gap: 16px;
 }
 
+.deleteButton {
+  border-color: #ef4444;
+  color: #ef4444;
+  padding: 8px;
+  min-width: auto;
+  border-radius: 8px;
+}
+
+.deleteButton:hover {
+  background-color: #fef2f2;
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
 .avatarCircle {
   width: 32px;
   height: 32px;
