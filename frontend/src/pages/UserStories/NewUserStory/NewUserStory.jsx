@@ -58,8 +58,11 @@ const NewUserStory = () => {
       title: aiState.result.description.substring(0, 40) + (aiState.result.description.length > 40 ? '...' : ''),
       description: description,
       sustainableDescription: aiState.result.description,
-      status: 'DRAFT',
-      acceptanceCriteria: aiState.result.criteria || []
+      acceptanceCriteria: aiState.result.criteria || [],
+      focusArea: aiState.result.focusArea,
+      co2ImpactNote: aiState.result.co2ImpactNote,
+      aiGenerated: true,
+      status: 'DRAFT'
     })).then(() => {
       dispatch(clearAiSuggestion());
       navigate(`/projects/${projectId}`);

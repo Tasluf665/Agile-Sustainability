@@ -138,6 +138,8 @@ Now transform the following user story:
       }
     }
 
+    console.log(parsedResult);
+
     // Save to DB
     const suggestion = new AISuggestion({
       refId: storyId || null,

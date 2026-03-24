@@ -44,7 +44,17 @@ export const getUserStory = async (req, res) => {
 // @access  Private
 export const createUserStory = async (req, res) => {
   try {
-    const { projectId, originalDescription, priority, feature } = req.body;
+    const { 
+      projectId, 
+      originalDescription, 
+      priority, 
+      feature, 
+      sustainableDescription, 
+      acceptanceCriteria,
+      focusArea,
+      co2ImpactNote,
+      aiGenerated 
+    } = req.body;
 
     if (!projectId || !originalDescription) {
       return res.status(400).json({ message: 'Project ID and Original Description are required' });
@@ -54,6 +64,11 @@ export const createUserStory = async (req, res) => {
       projectId,
       createdBy: req.user._id,
       originalDescription,
+      sustainableDescription: sustainableDescription || '',
+      acceptanceCriteria: acceptanceCriteria || [],
+      focusArea: focusArea || '',
+      co2ImpactNote: co2ImpactNote || '',
+      aiGenerated: aiGenerated || false,
       priority: priority || 'MEDIUM',
       feature: feature || '',
       status: 'DRAFT',
@@ -76,7 +91,17 @@ export const createUserStory = async (req, res) => {
 // @access  Private
 export const updateUserStory = async (req, res) => {
   try {
-    const { originalDescription, priority, feature, status } = req.body;
+    const { 
+      originalDescription, 
+      priority, 
+      feature, 
+      status,
+      sustainableDescription,
+      acceptanceCriteria,
+      focusArea,
+      co2ImpactNote,
+      aiGenerated
+    } = req.body;
 
     const story = await UserStory.findById(req.params.id);
 
@@ -91,6 +116,11 @@ export const updateUserStory = async (req, res) => {
     story.priority = priority !== undefined ? priority : story.priority;
     story.feature = feature !== undefined ? feature : story.feature;
     story.status = status !== undefined ? status : story.status;
+    story.sustainableDescription = sustainableDescription !== undefined ? sustainableDescription : story.sustainableDescription;
+    story.acceptanceCriteria = acceptanceCriteria !== undefined ? acceptanceCriteria : story.acceptanceCriteria;
+    story.focusArea = focusArea !== undefined ? focusArea : story.focusArea;
+    story.co2ImpactNote = co2ImpactNote !== undefined ? co2ImpactNote : story.co2ImpactNote;
+    story.aiGenerated = aiGenerated !== undefined ? aiGenerated : story.aiGenerated;
 
     const updatedStory = await story.save();
     res.json(updatedStory);

@@ -12,7 +12,9 @@ const formatStory = (story) => ({
   priority: story.priority,
   feature: story.feature,
   status: story.status,
-  focusArea: 'ENERGY EFFICIENCY',
+  focusArea: story.focusArea || '',
+  co2ImpactNote: story.co2ImpactNote || '',
+  aiGenerated: story.aiGenerated || false,
   useCaseCount: 0,
   assignees: story.createdBy ? [{ name: story.createdBy.name, avatarUrl: 'https://i.pravatar.cc/150?u=' + story.createdBy._id }] : []
 });
@@ -69,6 +71,11 @@ export const createUserStory = createAsyncThunk(
       const response = await api.post('/user-stories', {
         projectId: payload.projectId,
         originalDescription: payload.description,
+        sustainableDescription: payload.sustainableDescription,
+        acceptanceCriteria: payload.acceptanceCriteria,
+        focusArea: payload.focusArea,
+        co2ImpactNote: payload.co2ImpactNote,
+        aiGenerated: payload.aiGenerated,
         priority: payload.priority || 'MEDIUM',
         feature: payload.feature || ''
       });

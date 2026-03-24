@@ -42,6 +42,14 @@ const userStorySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    focusArea: {
+      type: String,
+      default: '',
+    },
+    co2ImpactNote: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,

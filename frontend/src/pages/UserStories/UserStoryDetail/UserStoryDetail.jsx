@@ -123,7 +123,7 @@ const UserStoryDetail = () => {
     const sustainableDesc = aiState.result?.description || currentStory?.sustainableDescription;
     const criteria = aiState.result?.criteria || currentStory?.acceptanceCriteria;
     const focusArea = aiState.result?.focusArea || currentStory?.focusArea;
-    const co2ImpactNote = aiState.result?.co2ImpactNote;
+    const co2ImpactNote = aiState.result?.co2ImpactNote || currentStory?.co2ImpactNote;
 
     if (sustainableDesc) {
       const isApproved = currentStory.status === 'APPROVED';
