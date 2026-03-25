@@ -114,7 +114,7 @@ Now transform the following user story:
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'stepfun/step-3.5-flash:free',
+        model: 'nvidia/nemotron-3-super-120b-a12b:free',
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' }
       },
@@ -161,5 +161,33 @@ Now transform the following user story:
   } catch (error) {
     console.error('Error generating AI story:', error?.response?.data || error.message);
     res.status(500).json({ message: 'AI Generation Failed', error: error.message });
+  }
+};
+// @desc    Update AI suggestion
+// @route   PUT /api/ai/suggestions/:id
+// @access  Private
+export const updateAISuggestion = async (req, res) => {
+  try {
+    const { sustainableStory, acceptanceCriteria } = req.body;
+
+    const suggestion = await AISuggestion.findById(req.params.id);
+
+    if (!suggestion) {
+      return res.status(404).json({ message: 'AI Suggestion not found' });
+    }
+
+    suggestion.outputText = sustainableStory !== undefined ? sustainableStory : suggestion.outputText;
+    suggestion.outputAcceptanceCriteria = acceptanceCriteria !== undefined ? acceptanceCriteria : suggestion.outputAcceptanceCriteria;
+
+    const updatedSuggestion = await suggestion.save();
+    
+    res.json({
+      suggestionId: updatedSuggestion._id,
+      sustainableStory: updatedSuggestion.outputText,
+      acceptanceCriteria: updatedSuggestion.outputAcceptanceCriteria
+    });
+  } catch (error) {
+    console.error(`Error in updateAISuggestion: ${error.message}`);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };

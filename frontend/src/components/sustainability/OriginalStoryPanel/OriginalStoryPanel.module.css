@@ -13,7 +13,26 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
+}
+
+.editIconButton {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.editIconButton:hover {
+  background-color: #f1f5f9;
+  color: var(--color-primary-green, #1c5f20);
 }
 
 .titleRow {
@@ -94,4 +113,31 @@
   font-weight: 700;
   width: 100%;
   justify-content: center;
+}
+
+.editModeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editTextarea :global(textarea) {
+  background-color: white !important;
+  font-style: normal;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelBtn {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.saveBtn {
+  font-size: 13px;
+  padding: 6px 16px;
 }

@@ -16,6 +16,30 @@
   padding-bottom: 16px;
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editIconButton {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.editIconButton:hover {
+  background-color: rgba(28, 95, 32, 0.1);
+  color: var(--color-primary-green, #1c5f20);
+}
+
 .titleRow {
   display: flex;
   align-items: center;
@@ -125,11 +149,53 @@
   width: 201px;
 }
 
-.rejectButton {
+.regenerateButton {
   border-radius: 8px;
   padding: 11px 16px;
   font-weight: 700;
   color: #475569;
   border-color: #e2e8f0;
   width: 203px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editModeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.editField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editLabel {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.editTextarea {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cancelBtn, .saveBtn {
+  min-width: 100px;
 }

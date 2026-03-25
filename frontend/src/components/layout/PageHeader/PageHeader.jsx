@@ -6,7 +6,7 @@ const PageHeader = ({ title, subtitle, actions }) => {
     <div className={styles.header}>
       <div className={styles.content}>
         <h1 className={styles.title}>{title}</h1>
-        {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+        {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
       </div>
       {actions && <div className={styles.actions}>{actions}</div>}
     </div>

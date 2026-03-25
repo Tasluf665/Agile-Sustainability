@@ -52,6 +52,7 @@ export const generateSustainableStory = createAsyncThunk(
       });
       // Return the object containing the new fields from the openrouter prompt
       return {
+        suggestionId: response.data.suggestionId,
         description: response.data.sustainableStory,
         criteria: response.data.acceptanceCriteria || [],
         focusArea: response.data.focusArea,
@@ -130,6 +131,30 @@ export const deleteUserStory = createAsyncThunk(
     try {
       await api.delete(`/user-stories/${storyId}`);
       return { storyId };
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const updateUserStory = createAsyncThunk(
+  'userStories/updateUserStory',
+  async ({ storyId, updates }, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`/user-stories/${storyId}`, updates);
+      return formatStory(response.data);
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const updateAISuggestion = createAsyncThunk(
+  'userStories/updateAISuggestion',
+  async ({ suggestionId, updates }, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`/ai/suggestions/${suggestionId}`, updates);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -216,6 +241,24 @@ const userStoriesSlice = createSlice({
         state.items = state.items.filter(s => s.id !== action.payload.storyId);
         if (state.currentStory && state.currentStory.id === action.payload.storyId) {
           state.currentStory = null;
+        }
+      })
+      .addCase(updateUserStory.fulfilled, (state, action) => {
+        if (state.currentStory && state.currentStory.id === action.payload.id) {
+          state.currentStory = action.payload;
+        }
+        const index = state.items.findIndex(s => s.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(updateAISuggestion.fulfilled, (state, action) => {
+        if (state.aiSuggestion.result) {
+          state.aiSuggestion.result = {
+            ...state.aiSuggestion.result,
+            description: action.payload.sustainableStory,
+            criteria: action.payload.acceptanceCriteria
+          };
         }
       });
   },

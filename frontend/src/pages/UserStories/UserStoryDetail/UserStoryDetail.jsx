@@ -14,7 +14,9 @@ import {
   generateSustainableStory, 
   acceptSustainableStory, 
   rejectSustainableStory,
-  deleteUserStory
+  deleteUserStory,
+  updateUserStory,
+  updateAISuggestion
 } from '../../../store/slices/userStoriesSlice';
 import { fetchUseCasesByStory } from '../../../store/slices/useCasesSlice';
 import { fetchProjects } from '../../../store/slices/projectsSlice';
@@ -42,6 +44,8 @@ const UserStoryDetail = () => {
 
   const projects = useSelector(state => state.projects.projects);
   const project = projects.find(p => p.id === projectId);
+
+  const isApproved = currentStory?.status === 'APPROVED';
 
   useEffect(() => {
     if (!project) {
@@ -78,6 +82,31 @@ const UserStoryDetail = () => {
       dispatch(deleteUserStory({ projectId, storyId })).then(() => {
         navigate(`/projects/${projectId}`);
       });
+    }
+  };
+
+  const handleUpdateOriginalStory = (updates) => {
+    dispatch(updateUserStory({ storyId, updates }));
+  };
+
+  const handleUpdateSustainableVersion = (updates) => {
+    // If we have an active result with a suggestionId and the story is not yet approved,
+    // we update the AI suggestion record.
+    if (!isApproved && aiState.result?.suggestionId) {
+      dispatch(updateAISuggestion({
+        suggestionId: aiState.result.suggestionId,
+        updates
+      }));
+    } else {
+      // Otherwise (approved story or a draft with existing sustainable fields),
+      // we update the UserStory model directly.
+      dispatch(updateUserStory({ 
+        storyId, 
+        updates: {
+          sustainableDescription: updates.sustainableStory,
+          acceptanceCriteria: updates.acceptanceCriteria
+        } 
+      }));
     }
   };
 
@@ -146,7 +175,6 @@ const UserStoryDetail = () => {
     const co2ImpactNote = aiState.result?.co2ImpactNote || currentStory?.co2ImpactNote;
 
     if (sustainableDesc) {
-      const isApproved = currentStory.status === 'APPROVED';
       return (
         <div className={styles.rightPanelWrapper}>
           <SustainableVersionPanel
@@ -155,9 +183,12 @@ const UserStoryDetail = () => {
             acceptanceCriteria={criteria}
             co2ImpactNote={co2ImpactNote}
             onAccept={handleAccept}
-            onReject={handleReject}
+            onRegenerate={handleRegenerate}
+            onUpdate={handleUpdateSustainableVersion}
             isAccepting={false} // Would add if there was an accepting thunk loading state
-            readonly={isApproved}
+            isRegenerating={aiState.isGenerating}
+            isApproved={isApproved}
+            readonly={false} // Always allowed to edit/regenerate now
           />
         </div>
       );
@@ -197,6 +228,7 @@ const UserStoryDetail = () => {
                   feature={currentStory.feature}
                   onRegenerate={handleRegenerate}
                   isGenerating={aiState.isGenerating}
+                  onUpdate={handleUpdateOriginalStory}
                 />
               </div>
 
