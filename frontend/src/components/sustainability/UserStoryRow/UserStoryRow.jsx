@@ -14,7 +14,7 @@ const FOCUS_AREAS = [
 ];
 
 const getStatusVariant = (status) => {
-  switch(status) {
+  switch (status) {
     case 'APPROVED':
     case 'ACCEPTED': return 'success';
     case 'IN_REVIEW':
@@ -30,7 +30,7 @@ const getStatusLabel = (status) => {
   return String(status).replace('_', ' ').toUpperCase();
 };
 
-const UserStoryRow = ({ status, focusArea, title, useCaseCount = 0, assignees = [], onViewStory, onAddUseCase }) => {
+const UserStoryRow = ({ status, focusArea, title, onViewStory, onAddUseCase }) => {
   // Use lower case focusArea as string, mapping to FOCUS_AREAS array
   const faData = FOCUS_AREAS.find(fa => fa.id === String(focusArea).toUpperCase()) || FOCUS_AREAS[0];
 
@@ -41,15 +41,6 @@ const UserStoryRow = ({ status, focusArea, title, useCaseCount = 0, assignees = 
           <Badge label={getStatusLabel(status)} variant={getStatusVariant(status)} />
           <Badge label={faData.label} icon={faData.icon} variant="primary" />
           <h4 className={styles.title}>{title}</h4>
-        </div>
-        
-        <div className={styles.actionsRow}>
-          <div className={styles.useCaseLink}>
-            <span className={styles.useCaseCount}>{useCaseCount} Use Case{useCaseCount !== 1 ? 's' : ''}</span>
-          </div>
-          <div className={styles.assigneesBlock}>
-            <AvatarGroup avatars={assignees} max={3} />
-          </div>
         </div>
       </div>
       <div className={styles.buttons}>

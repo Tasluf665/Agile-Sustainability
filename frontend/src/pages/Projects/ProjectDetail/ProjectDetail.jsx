@@ -125,8 +125,6 @@ const ProjectDetail = () => {
               status={story.status}
               focusArea={story.focusArea}
               title={story.title}
-              useCaseCount={story.useCaseCount}
-              assignees={story.assignees}
               onViewStory={() => handleViewStory(story._id || story.id)}
               onAddUseCase={() => handleAddUseCase(story._id || story.id)}
             />
