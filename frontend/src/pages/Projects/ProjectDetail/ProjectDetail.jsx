@@ -76,7 +76,7 @@ const ProjectDetail = () => {
   const handleAddUseCase = (storyId) => {
     navigate(`/projects/${projectId}/user-stories/${storyId}/use-cases/new`);
   };
-  
+
   const handleDeleteProject = async () => {
     setIsDeleting(true);
     try {
@@ -104,19 +104,19 @@ const ProjectDetail = () => {
             <span>Delete project?</span>
           </div>
           <div className={styles.confirmButtons}>
-            <Button 
-               variant="danger" 
-               size="sm" 
-               onClick={handleDeleteProject}
-               isLoading={isDeleting}
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={handleDeleteProject}
+              isLoading={isDeleting}
             >
               Confirm
             </Button>
-            <Button 
-               variant="outline" 
-               size="sm" 
-               onClick={() => setShowDeleteConfirm(false)}
-               disabled={isDeleting}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowDeleteConfirm(false)}
+              disabled={isDeleting}
             >
               <X size={14} />
             </Button>
@@ -187,7 +187,7 @@ const ProjectDetail = () => {
       </div>
 
       {/* Bottom Split: Chart and Activity */}
-      <div className={styles.bottomSplit}>
+      {/* <div className={styles.bottomSplit}>
         <div className={styles.chartPanel}>
           <h3 className={styles.sectionTitle}>Sustainability Score Trend</h3>
           <div className={styles.chartWrapper}>
@@ -201,7 +201,7 @@ const ProjectDetail = () => {
           <h3 className={styles.sectionTitle}>Recent Activity</h3>
           <ActivityFeed activities={activityFeed} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 
