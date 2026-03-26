@@ -170,3 +170,48 @@
   font-weight: 500;
   color: var(--color-slate-900, #0f172a);
 }
+
+.confirmWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  padding: 4px 12px;
+  border-radius: 8px;
+  animation: slideIn 0.2s ease-out;
+}
+
+.confirmMessage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #991b1b;
+}
+
+.warningIcon {
+  color: #dc2626;
+}
+
+.confirmButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteButton {
+  border-color: #fca5a5 !important;
+  color: #ef4444 !important;
+}
+
+.deleteButton:hover {
+  background-color: #fef2f2 !important;
+  border-color: #ef4444 !important;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}

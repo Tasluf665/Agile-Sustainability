@@ -83,6 +83,30 @@ export const createProject = createAsyncThunk(
   }
 );
 
+export const updateProjectAsync = createAsyncThunk(
+  'projects/updateProject',
+  async ({ projectId, projectData }, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`/projects/${projectId}`, projectData);
+      return formatProject(response.data.data);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteProject = createAsyncThunk(
+  'projects/deleteProject',
+  async (projectId, { rejectWithValue }) => {
+    try {
+      await api.delete(`/projects/${projectId}`);
+      return projectId;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const projectsSlice = createSlice({
   name: 'projects',
   initialState,
@@ -144,6 +168,21 @@ const projectsSlice = createSlice({
         state.projects.push(action.payload);
       })
       .addCase(createProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.projects = state.projects.filter(p => p.id !== action.payload);
+        if (state.currentProject?.id === action.payload) {
+          state.currentProject = null;
+        }
+      })
+      .addCase(deleteProject.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

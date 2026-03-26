@@ -10,11 +10,11 @@ import StatCard from '../../../components/common/StatCard/StatCard';
 import SustainabilityScoreChart from '../../../components/sustainability/SustainabilityScoreChart/SustainabilityScoreChart';
 import ActivityFeed from '../../../components/common/ActivityFeed/ActivityFeed';
 import UserStoryRow from '../../../components/sustainability/UserStoryRow/UserStoryRow';
-import { PlusCircle, ArrowRight, ArrowLeft } from 'lucide-react';
+import { PlusCircle, ArrowRight, ArrowLeft, Trash2, AlertTriangle, X } from 'lucide-react';
 import styles from './ProjectDetail.module.css';
 
 // Thunks and Selectors
-import { fetchProjects } from '../../../store/slices/projectsSlice';
+import { fetchProjects, deleteProject } from '../../../store/slices/projectsSlice';
 import { fetchUserStoriesByProject } from '../../../store/slices/userStoriesSlice';
 import { fetchUseCasesByProject } from '../../../store/slices/useCasesSlice';
 import { fetchProjectActivity } from '../../../store/slices/activitySlice';
@@ -38,6 +38,8 @@ const ProjectDetail = () => {
 
   const [activeTab, setActiveTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const projects = useSelector(state => state.projects.projects);
   const project = projects.find(p => p.id === projectId);
@@ -74,6 +76,20 @@ const ProjectDetail = () => {
   const handleAddUseCase = (storyId) => {
     navigate(`/projects/${projectId}/user-stories/${storyId}/use-cases/new`);
   };
+  
+  const handleDeleteProject = async () => {
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteProject(projectId)).unwrap();
+      navigate('/projects');
+    } catch (err) {
+      console.error('Failed to delete project:', err);
+      alert('Failed to delete project. Please try again.');
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
 
   const filteredStories = activeStories.filter(story =>
     story.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -81,10 +97,42 @@ const ProjectDetail = () => {
 
   const HeaderActions = (
     <div className={styles.headerActions}>
-      <Button variant="primary" onClick={handleAddUserStory}>
-        <PlusCircle size={16} />
-        <span style={{ marginLeft: '8px' }}>Add User Story</span>
-      </Button>
+      {showDeleteConfirm ? (
+        <div className={styles.confirmWrapper}>
+          <div className={styles.confirmMessage}>
+            <AlertTriangle size={16} className={styles.warningIcon} />
+            <span>Delete project?</span>
+          </div>
+          <div className={styles.confirmButtons}>
+            <Button 
+               variant="danger" 
+               size="sm" 
+               onClick={handleDeleteProject}
+               isLoading={isDeleting}
+            >
+              Confirm
+            </Button>
+            <Button 
+               variant="outline" 
+               size="sm" 
+               onClick={() => setShowDeleteConfirm(false)}
+               disabled={isDeleting}
+            >
+              <X size={14} />
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Button variant="outline" onClick={() => setShowDeleteConfirm(true)} className={styles.deleteButton}>
+            <Trash2 size={16} />
+          </Button>
+          <Button variant="primary" onClick={handleAddUserStory}>
+            <PlusCircle size={16} />
+            <span style={{ marginLeft: '8px' }}>Add User Story</span>
+          </Button>
+        </>
+      )}
     </div>
   );
 

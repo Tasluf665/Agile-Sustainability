@@ -81,3 +81,23 @@
     transform: rotate(360deg);
   }
 }
+
+.danger {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.danger:hover {
+  background-color: #dc2626;
+}
+
+.dangerOutline {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+}
+
+.dangerOutline:hover {
+  background-color: #fef2f2;
+  border-color: #ef4444;
+}

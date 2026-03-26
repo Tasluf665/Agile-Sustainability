@@ -12,6 +12,8 @@ import NewUserStory from '../pages/UserStories/NewUserStory/NewUserStory';
 import UserStoryDetail from '../pages/UserStories/UserStoryDetail/UserStoryDetail';
 import NewUseCase from '../pages/UseCases/NewUseCase/NewUseCase';
 import UseCaseDetail from '../pages/UseCases/UseCaseDetail/UseCaseDetail';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import Settings from '../pages/Settings/Settings';
 
 const AppRouter = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -35,6 +37,9 @@ const AppRouter = () => {
         <Route path="/projects/:projectId/user-stories/:storyId" element={<UserStoryDetail />} />
         <Route path="/projects/:projectId/user-stories/:storyId/use-cases/new" element={<NewUseCase />} />
         <Route path="/projects/:projectId/user-stories/:storyId/use-cases/:useCaseId" element={<UseCaseDetail />} />
+        
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/settings" element={<Settings />} />
       </Route>
     </Routes>
   );
