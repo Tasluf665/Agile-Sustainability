@@ -60,7 +60,14 @@ export const createUseCase = async (req, res) => {
       precondition: precondition || '',
       mainFlow: mainFlow || [],
       postcondition: postcondition || '',
-      status: 'ACTIVE',
+      // Optional sustainable fields from AI suggestion
+      sustainableTitle: req.body.sustainableTitle || '',
+      sustainableFlow: req.body.sustainableFlow || [],
+      sustainabilityNotes: req.body.sustainabilityNotes || '',
+      co2SavingPerHour: req.body.co2SavingPerHour || 0,
+      dimension: req.body.dimension || '',
+      // Allow caller to set status (e.g., 'APPROVED') or default to 'ACTIVE'
+      status: req.body.status || 'ACTIVE',
     });
 
     const savedUseCase = await newUseCase.save();

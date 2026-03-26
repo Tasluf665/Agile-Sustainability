@@ -132,8 +132,17 @@ const useCasesSlice = createSlice({
         state.error = action.payload;
       })
       // Delete
+      .addCase(deleteUseCase.pending, (state) => {
+        state.error = null;
+      })
       .addCase(deleteUseCase.fulfilled, (state, action) => {
         state.useCases = state.useCases.filter(uc => uc.id !== action.payload && uc._id !== action.payload);
+        if (state.currentUseCase && (state.currentUseCase._id === action.payload || state.currentUseCase.id === action.payload)) {
+          state.currentUseCase = null;
+        }
+      })
+      .addCase(deleteUseCase.rejected, (state, action) => {
+        state.error = action.payload;
       })
       // Fetch By ID
       .addCase(fetchUseCaseById.pending, (state) => {

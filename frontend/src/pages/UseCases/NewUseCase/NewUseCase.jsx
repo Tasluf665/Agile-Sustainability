@@ -73,7 +73,7 @@ const NewUseCase = () => {
       alert('Please provide at least a title and one flow step.');
       return;
     }
-    
+
     dispatch(generateSustainableUseCase({
       projectId,
       userStoryId: storyId,
@@ -87,7 +87,7 @@ const NewUseCase = () => {
 
   const handleAccept = () => {
     if (!currentSuggestion) return;
-    
+
     const finalUseCase = {
       projectId,
       userStoryId: storyId,
@@ -96,19 +96,20 @@ const NewUseCase = () => {
       precondition: useCaseData.precondition,
       postcondition: useCaseData.postcondition,
       mainFlow: useCaseData.mainFlow.filter(s => s.trim()),
-      
+
       // Sustainable fields from AI
       sustainableTitle: currentSuggestion.sustainableTitle,
       sustainableFlow: currentSuggestion.sustainableFlow,
       sustainabilityNotes: currentSuggestion.sustainabilityNotes,
       co2SavingPerHour: currentSuggestion.co2SavingPerHour,
       dimension: currentSuggestion.dimension,
-      status: 'Approved'
+      status: 'APPROVED'
     };
 
     dispatch(createUseCase(finalUseCase)).then((res) => {
+      console.log(res);
       if (!res.error) {
-        navigate(`/projects/${projectId}/user-stories/${storyId}`);
+        navigate(`/projects/${projectId}/user-stories/${storyId}/use-cases/${res.payload._id}`);
       }
     });
   };
@@ -163,8 +164,8 @@ const NewUseCase = () => {
   return (
     <AppShell activeItem="Projects">
       <div className={styles.pageWrapper}>
-        <PageHeader 
-          title="Create New Use Case" 
+        <PageHeader
+          title="Create New Use Case"
           subtitle={breadcrumbs}
         />
 
@@ -173,13 +174,13 @@ const NewUseCase = () => {
             <div className={styles.formSection}>
               <h3 className={styles.sectionTitle}>General Information</h3>
               <div className={styles.formRow}>
-                <Input 
+                <Input
                   label="Use Case Title"
                   placeholder="e.g., Stream High Fidelity Asset"
                   value={useCaseData.title}
                   onChange={(e) => handleChange('title', e.target.value)}
                 />
-                <Input 
+                <Input
                   label="Primary Actor"
                   placeholder="e.g., Registered User"
                   value={useCaseData.actor}
@@ -188,14 +189,14 @@ const NewUseCase = () => {
               </div>
 
               <div className={styles.formRow}>
-                <Textarea 
+                <Textarea
                   label="Precondition"
                   placeholder="e.g., User is logged in and has stable connection"
                   value={useCaseData.precondition}
                   onChange={(e) => handleChange('precondition', e.target.value)}
                   rows={3}
                 />
-                <Textarea 
+                <Textarea
                   label="Postcondition"
                   placeholder="e.g., Asset is displayed on user's screen"
                   value={useCaseData.postcondition}
@@ -207,7 +208,7 @@ const NewUseCase = () => {
 
             <div className={styles.formSection}>
               <h3 className={styles.sectionTitle}>Main Flow</h3>
-              <MainFlowBuilder 
+              <MainFlowBuilder
                 steps={useCaseData.mainFlow}
                 onChange={handleFlowChange}
                 onAddStep={handleAddStep}
@@ -218,31 +219,31 @@ const NewUseCase = () => {
 
             <div className={styles.generateArea}>
               <div className={styles.generateButtonWrapper}>
-                <Button 
-                    variant="primary" 
-                    fullWidth 
-                    onClick={handleGenerate}
-                    disabled={isGenerating}
+                <Button
+                  variant="primary"
+                  fullWidth
+                  onClick={handleGenerate}
+                  disabled={isGenerating}
                 >
-                    <Sparkles size={18} style={{ marginRight: '8px' }} />
-                    {isGenerating ? 'Generating...' : 'Generate Sustainable Use Case'}
+                  <Sparkles size={18} style={{ marginRight: '8px' }} />
+                  {isGenerating ? 'Generating...' : 'Generate Sustainable Use Case'}
                 </Button>
-                <Button 
-                    variant="outline" 
-                    fullWidth 
-                    onClick={handleSave}
-                    disabled={isGenerating}
-                    className={styles.addUseCaseBtn}
+                <Button
+                  variant="outline"
+                  fullWidth
+                  onClick={handleSave}
+                  disabled={isGenerating}
+                  className={styles.addUseCaseBtn}
                 >
-                    <PlusCircle size={18} style={{ marginRight: '8px' }} />
-                    Add Use Case
+                  <PlusCircle size={18} style={{ marginRight: '8px' }} />
+                  Add Use Case
                 </Button>
               </div>
             </div>
           </div>
 
           <div className={styles.rightPanelWrapper}>
-            <AISuggestionPanel 
+            <AISuggestionPanel
               type="useCase"
               status={isGenerating ? 'loading' : (currentSuggestion ? 'result' : 'waiting')}
               suggestion={currentSuggestion?.sustainableTitle}

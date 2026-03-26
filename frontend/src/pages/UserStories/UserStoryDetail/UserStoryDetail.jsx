@@ -9,10 +9,10 @@ import Badge from '../../../components/common/Badge/Badge';
 import SkeletonCard from '../../../components/common/SkeletonCard/SkeletonCard';
 import AlertBanner from '../../../components/feedback/AlertBanner/AlertBanner';
 
-import { 
-  fetchUserStoryById, 
-  generateSustainableStory, 
-  acceptSustainableStory, 
+import {
+  fetchUserStoryById,
+  generateSustainableStory,
+  acceptSustainableStory,
   rejectSustainableStory,
   deleteUserStory,
   updateUserStory,
@@ -76,13 +76,11 @@ const UserStoryDetail = () => {
   const handleViewUseCase = (useCaseId) => {
     navigate(`/projects/${projectId}/user-stories/${storyId}/use-cases/${useCaseId}`);
   };
-  
+
   const handleDeleteStory = () => {
-    if (window.confirm('Are you sure you want to delete this user story? This action cannot be undone.')) {
-      dispatch(deleteUserStory({ projectId, storyId })).then(() => {
-        navigate(`/projects/${projectId}`);
-      });
-    }
+    dispatch(deleteUserStory({ projectId, storyId })).then(() => {
+      navigate(`/projects/${projectId}`);
+    });
   };
 
   const handleUpdateOriginalStory = (updates) => {
@@ -100,12 +98,12 @@ const UserStoryDetail = () => {
     } else {
       // Otherwise (approved story or a draft with existing sustainable fields),
       // we update the UserStory model directly.
-      dispatch(updateUserStory({ 
-        storyId, 
+      dispatch(updateUserStory({
+        storyId,
         updates: {
           sustainableDescription: updates.sustainableStory,
           acceptanceCriteria: updates.acceptanceCriteria
-        } 
+        }
       }));
     }
   };
@@ -138,8 +136,8 @@ const UserStoryDetail = () => {
   const HeaderActions = currentStory ? (
     <div className={styles.headerActions}>
       <Badge text={currentStory.status.replace('_', ' ')} color={getBadgeColor(currentStory.status)} size="md" />
-      <Button 
-        variant="outline" 
+      <Button
+        variant="outline"
         onClick={handleDeleteStory}
         className={styles.deleteButton}
       >

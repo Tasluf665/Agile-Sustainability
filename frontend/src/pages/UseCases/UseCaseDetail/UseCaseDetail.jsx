@@ -11,19 +11,21 @@ import OriginalUseCasePanel from '../../../components/sustainability/OriginalUse
 import SustainableUseCasePanel from '../../../components/sustainability/SustainableUseCasePanel/SustainableUseCasePanel';
 import AISuggestionPanel from '../../../components/sustainability/AISuggestionPanel/AISuggestionPanel';
 import LinkedUserStoryCard from '../../../components/sustainability/LinkedUserStoryCard/LinkedUserStoryCard';
-import { 
-  ArrowLeft
+import {
+  ArrowLeft,
+  Trash2
 } from 'lucide-react';
 import styles from './UseCaseDetail.module.css';
 
 // Thunks and Actions
 import { fetchProjectById } from '../../../store/slices/projectsSlice';
 import { fetchUserStoryById } from '../../../store/slices/userStoriesSlice';
-import { 
-  fetchUseCaseById, 
-  acceptSustainableUseCase, 
+import {
+  fetchUseCaseById,
+  acceptSustainableUseCase,
   rejectSustainableUseCase,
-  updateUseCase
+  updateUseCase,
+  deleteUseCase
 } from '../../../store/slices/useCasesSlice';
 import { generateSustainableUseCase, resetSuggestion } from '../../../store/slices/aiSuggestionSlice';
 
@@ -33,6 +35,7 @@ const UseCaseDetail = () => {
   const dispatch = useDispatch();
 
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { currentProject } = useSelector(state => state.projects);
   const { currentStory: selectedStory, isLoading: storyLoading, error: storyError } = useSelector(state => state.userStories);
@@ -43,7 +46,7 @@ const UseCaseDetail = () => {
     if (projectId) dispatch(fetchProjectById(projectId));
     if (storyId) dispatch(fetchUserStoryById({ projectId, storyId }));
     if (useCaseId) dispatch(fetchUseCaseById({ projectId, storyId, useCaseId }));
-    
+
     return () => {
       dispatch(resetSuggestion());
     };
@@ -51,7 +54,7 @@ const UseCaseDetail = () => {
 
   const handleGenerateSustainable = async () => {
     if (!currentUseCase) return;
-    
+
     setIsGenerating(true);
     try {
       await dispatch(generateSustainableUseCase({
@@ -94,7 +97,7 @@ const UseCaseDetail = () => {
     dispatch(rejectSustainableUseCase(useCaseId));
     dispatch(resetSuggestion());
   };
-  
+
   const handleRegenerateFromReview = () => {
     // Reject current one (moves to Draft) and start generation
     dispatch(rejectSustainableUseCase(useCaseId)).then(() => {
@@ -125,12 +128,25 @@ const UseCaseDetail = () => {
     }
   };
 
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await dispatch(deleteUseCase(useCaseId)).unwrap();
+      navigate(`/projects/${projectId}/user-stories/${storyId}`);
+    } catch (err) {
+      console.error('Delete failed:', err);
+      alert('Failed to delete the use case. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   // Loading State
   if (useCaseLoading || storyLoading || (!currentUseCase && !useCaseError)) {
     return (
       <AppShell>
         <div style={{ padding: '32px' }}>
-          <PageHeader 
+          <PageHeader
             title="Loading Details..."
             subtitle="Please wait while we fetch the use case information"
           />
@@ -148,17 +164,17 @@ const UseCaseDetail = () => {
     return (
       <AppShell>
         <div style={{ padding: '32px' }}>
-          <PageHeader 
+          <PageHeader
             title="Error"
             subtitle="Could not load use case details"
           />
-          <AlertBanner 
-            type="error" 
-            message={useCaseError || storyError || "An unexpected error occurred."} 
+          <AlertBanner
+            type="error"
+            message={useCaseError || storyError || "An unexpected error occurred."}
           />
-          <Button 
-            variant="outline" 
-            onClick={() => navigate(-1)} 
+          <Button
+            variant="outline"
+            onClick={() => navigate(-1)}
             style={{ marginTop: '20px' }}
           >
             Go Back
@@ -182,7 +198,7 @@ const UseCaseDetail = () => {
   let rightPanel;
   if (isApproved || hasSustainableVersion) {
     rightPanel = (
-      <SustainableUseCasePanel 
+      <SustainableUseCasePanel
         optimizedTitle={currentUseCase.sustainableTitle}
         modifiedFlow={currentUseCase.sustainableFlow || []}
         sustainabilityNotes={currentUseCase.sustainabilityNotes}
@@ -198,7 +214,7 @@ const UseCaseDetail = () => {
   } else {
     // Draft state - show AI Suggestion Panel (waiting, loading, or result)
     rightPanel = (
-      <AISuggestionPanel 
+      <AISuggestionPanel
         type="useCase"
         status={isGenerating || aiLoading ? 'loading' : (aiSuggestion ? 'result' : 'waiting')}
         suggestion={aiSuggestion?.sustainableTitle}
@@ -230,13 +246,22 @@ const UseCaseDetail = () => {
       <Button variant="outline" onClick={() => navigate(-1)}>
         <ArrowLeft size={16} style={{ marginRight: '8px' }} /> Back
       </Button>
+      <Button
+        variant="outline"
+        onClick={handleDelete}
+        disabled={isDeleting}
+        style={{ color: '#dc2626', borderColor: '#fca5a5' }}
+      >
+        <Trash2 size={16} style={{ marginRight: '8px' }} />
+        {isDeleting ? 'Deleting...' : 'Delete'}
+      </Button>
     </div>
   );
 
   return (
     <AppShell>
       <div className={styles.detailContainer}>
-        <PageHeader 
+        <PageHeader
           title={`Use Case: ${currentUseCase.title}`}
           subtitle={breadcrumbText}
           actions={HeaderActions}
@@ -244,7 +269,7 @@ const UseCaseDetail = () => {
 
         <div className={styles.gridContainer}>
           <div className={styles.mainColumn}>
-            <OriginalUseCasePanel 
+            <OriginalUseCasePanel
               title={currentUseCase.title}
               actor={currentUseCase.actor}
               precondition={currentUseCase.precondition}
@@ -262,7 +287,7 @@ const UseCaseDetail = () => {
               {rightPanel}
 
               <div className={styles.linkedStoryContainer}>
-                <LinkedUserStoryCard 
+                <LinkedUserStoryCard
                   status={currentUseCase.status === 'APPROVED' ? 'APPROVED' : (hasSustainableVersion ? 'IN REVIEW' : 'DRAFT')}
                   storyExcerpt={selectedStory?.description || `As a ${currentUseCase.actor}, I want to...`}
                   onViewStory={() => navigate(`/projects/${projectId}/user-stories/${storyId}`)}
