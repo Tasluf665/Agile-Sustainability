@@ -14,6 +14,8 @@ import NewUseCase from '../pages/UseCases/NewUseCase/NewUseCase';
 import UseCaseDetail from '../pages/UseCases/UseCaseDetail/UseCaseDetail';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Settings from '../pages/Settings/Settings';
+import VerifyEmail from '../pages/Auth/VerifyEmail';
+import ResetPassword from '../pages/Auth/ResetPassword';
 
 const AppRouter = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -28,6 +30,8 @@ const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>

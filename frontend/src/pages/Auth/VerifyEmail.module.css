@@ -1,0 +1,101 @@
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fafc;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card {
+  background-color: white;
+  padding: 48px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+}
+
+.statusContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.text {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.spinner {
+  color: #1c5f20;
+  animation: spin 2s linear infinite;
+}
+
+.successIcon {
+  color: #16a34a;
+}
+
+.errorIcon {
+  color: #ef4444;
+}
+
+.actionButton {
+  display: inline-block;
+  background-color: #1c5f20;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background-color: #154a18;
+}
+
+.actionButtonOutline {
+  display: inline-block;
+  background-color: transparent;
+  color: #1c5f20;
+  border: 1px solid #1c5f20;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  width: 100%;
+  margin-top: 12px;
+  transition: all 0.2s;
+}
+
+.actionButtonOutline:hover {
+  background-color: #f1f8f1;
+}
+
+.actionGroup {
+  width: 100%;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

@@ -18,7 +18,6 @@ export const registerUser = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
-      // Map fullName from frontend to name for backend
       const mappedData = {
         name: userData.fullName,
         email: userData.email,
@@ -27,7 +26,18 @@ export const registerUser = createAsyncThunk(
       };
       
       const data = await api('/auth/register', { body: mappedData });
-      localStorage.setItem('token', data.token);
+      return data; // Should contain success message
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const verifyEmail = createAsyncThunk(
+  'auth/verifyEmail',
+  async (token, { rejectWithValue }) => {
+    try {
+      const data = await api(`/auth/verify/${token}`);
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -40,6 +50,21 @@ export const forgotPassword = createAsyncThunk(
   async (email, { rejectWithValue }) => {
     try {
       const data = await api('/auth/forgot-password', { body: { email } });
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async ({ token, password }, { rejectWithValue }) => {
+    try {
+      const data = await api(`/auth/reset-password/${token}`, { 
+        method: 'PUT',
+        body: { password } 
+      });
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -66,6 +91,7 @@ const initialState = {
   isAuthenticated: !!localStorage.getItem('token'),
   loading: false,
   error: null,
+  signupSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -90,6 +116,9 @@ const authSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    resetSignupSuccess: (state) => {
+      state.signupSuccess = false;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -110,14 +139,24 @@ const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.signupSuccess = false;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isAuthenticated = true;
+        state.signupSuccess = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(verifyEmail.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyEmail.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -129,6 +168,17 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(forgotPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -149,5 +199,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout, setLoading, setError } = authSlice.actions;
+export const { setCredentials, logout, setLoading, setError, resetSignupSuccess } = authSlice.actions;
 export default authSlice.reducer;
