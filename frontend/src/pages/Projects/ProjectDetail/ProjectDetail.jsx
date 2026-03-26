@@ -121,14 +121,14 @@ const ProjectDetail = () => {
         ) : filteredStories.length > 0 ? (
           filteredStories.map(story => (
             <UserStoryRow
-              key={story.id}
+              key={story._id || story.id}
               status={story.status}
               focusArea={story.focusArea}
               title={story.title}
               useCaseCount={story.useCaseCount}
               assignees={story.assignees}
-              onViewStory={() => handleViewStory(story.id)}
-              onAddUseCase={() => handleAddUseCase(story.id)}
+              onViewStory={() => handleViewStory(story._id || story.id)}
+              onAddUseCase={() => handleAddUseCase(story._id || story.id)}
             />
           ))
         ) : (

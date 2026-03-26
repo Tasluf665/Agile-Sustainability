@@ -8,8 +8,8 @@ const UseCaseRow = ({
   title,
   status,
   lastEdited,
-  originalSummary,
-  sustainableSummary,
+  originalTitle,
+  sustainableTitle,
   onViewDetails
 }) => {
   const getBadgeColor = (statusName) => {
@@ -21,13 +21,15 @@ const UseCaseRow = ({
     }
   };
 
+  const displayId = id && id.length < 10 ? id : '';
+
   return (
     <div className={styles.rowContainer}>
       <div className={styles.headerRow}>
         <div className={styles.titleGroup}>
-          <h3 className={styles.titleText}>{`${id}: ${title}`}</h3>
-          <Badge text={status} color={getBadgeColor(status)} />
-          <span className={styles.lastEditedText}>{lastEdited}</span>
+          <h3 className={styles.titleText}>{displayId ? `${displayId}: ${title}` : title}</h3>
+          <Badge text={status || 'Draft'} color={getBadgeColor(status)} />
+          {lastEdited && <span className={styles.lastEditedText}>{lastEdited}</span>}
         </div>
         <button className={styles.viewDetailsBtn} onClick={onViewDetails}>
           View Details <ArrowRight size={14} style={{ marginLeft: '4px' }} />
@@ -37,12 +39,12 @@ const UseCaseRow = ({
       <div className={styles.summariesGrid}>
         <div className={styles.summaryBoxOriginal}>
           <div className={styles.summaryLabel}>ORIGINAL</div>
-          <p className={styles.summaryTextOriginal}>{originalSummary}</p>
+          <p className={styles.summaryTextOriginal}>{originalTitle || title}</p>
         </div>
         
         <div className={styles.summaryBoxSustainable}>
           <div className={styles.summaryLabelSustainable}>SUSTAINABLE</div>
-          <p className={styles.summaryTextSustainable}>{sustainableSummary}</p>
+          <p className={styles.summaryTextSustainable}>{sustainableTitle || 'Awaiting optimization'}</p>
         </div>
       </div>
     </div>

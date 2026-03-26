@@ -1,0 +1,129 @@
+.originalPanel {
+  background-color: var(--white, #ffffff);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.header {
+  background-color: rgba(248, 250, 252, 0.5);
+  border-bottom: 1px solid rgba(28, 95, 32, 0.05);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headerTitle {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+}
+
+.editIconButton {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.editIconButton:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 15px;
+}
+
+.value {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.text {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.flowList {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.flowItem {
+  padding-left: 4px;
+}
+
+.editModeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.footer {
+  padding: 0 24px 24px;
+  margin-top: auto;
+}
+
+.generateButton {
+  width: 100%;
+}

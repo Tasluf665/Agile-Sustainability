@@ -5,7 +5,9 @@ import {
   createUseCase,
   updateUseCase,
   deleteUseCase,
-  applySustainableUseCase
+  applySustainableUseCase,
+  acceptSustainableUseCase,
+  rejectSustainableUseCase
 } from '../controllers/useCase.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 
@@ -25,5 +27,7 @@ router
   .delete(deleteUseCase);
 
 router.post('/:id/sustainable', applySustainableUseCase);
+router.patch('/:id/accept', acceptSustainableUseCase);
+router.patch('/:id/reject', rejectSustainableUseCase);
 
 export default router;

@@ -30,7 +30,7 @@ const useCaseSchema = new mongoose.Schema(
       default: '',
     },
     mainFlow: {
-      type: [String],
+      type: mongoose.Schema.Types.Mixed,
       default: [],
     },
     postcondition: {
@@ -42,7 +42,7 @@ const useCaseSchema = new mongoose.Schema(
       default: '',
     },
     sustainableFlow: {
-      type: [String],
+      type: mongoose.Schema.Types.Mixed,
       default: [],
     },
     sustainabilityNotes: {

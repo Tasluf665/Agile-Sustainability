@@ -1,0 +1,83 @@
+.detailContainer {
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  background-color: #f6f8f6;
+  min-height: calc(100vh - 64px);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sideColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.rightPanelWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkedStoryContainer {
+  margin-top: 32px;
+}
+
+.loadingGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+/* Breadcrumb Styles */
+.breadcrumbLinkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  margin-top: 4px;
+}
+
+.breadcrumbMuted {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.breadcrumbChevron {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.breadcrumbActive {
+  color: #1c5f20;
+  font-weight: 600;
+}
+
+.generateTriggerWrapper {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1200px) {
+  .gridContainer, .loadingGrid {
+    grid-template-columns: 1fr;
+  }
+}

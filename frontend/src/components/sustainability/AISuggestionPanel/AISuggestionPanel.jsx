@@ -7,9 +7,14 @@ import UsageIndicator from '../../common/UsageIndicator/UsageIndicator';
 import styles from './AISuggestionPanel.module.css';
 
 const AISuggestionPanel = ({
+  type = 'story', // 'story' or 'useCase'
   status = 'waiting',
   suggestion = '',
-  acceptanceCriteria = [],
+  acceptanceCriteria = [], // Repurposed for steps in useCase type
+  sustainableFlow = [],
+  sustainabilityNotes = '',
+  co2SavingPerHour = '',
+  dimension = '',
   focusArea = 'ENERGY EFFICIENCY',
   co2ImpactNote = '',
   onAccept,
@@ -19,7 +24,7 @@ const AISuggestionPanel = ({
   usagePeriod = 'week'
 }) => {
   return (
-    <div className={styles.panelContainer}>
+    <div className={`${styles.panelContainer} ${status === 'waiting' ? styles.waitingContainer : ''}`}>
       <div className={styles.panelHeader}>
         <div className={styles.headerTitleRow}>
           <div className={styles.headerIconWrapper}>
@@ -40,10 +45,17 @@ const AISuggestionPanel = ({
                 <Leaf size={28} className={styles.waitingIcon} />
               </div>
             </div>
-            <h4 className={styles.waitingTitle}>Waiting for input</h4>
+            <h4 className={styles.waitingTitle}>AI Suggestion</h4>
             <div className={styles.waitingText}>
-              <p>Your sustainable suggestion will appear here</p>
-              <p>once you click the generate button.</p>
+              <p>Your sustainable {type === 'useCase' ? 'use case' : 'suggestion'} will appear here. Our</p>
+              <p>AI will analyze your flow and suggest eco-</p>
+              <p>friendly enhancements.</p>
+            </div>
+            {/* Illustration Placeholder matching Figma */}
+            <div className={styles.illustrationPlaceholder}>
+              <div className={styles.illustLine} style={{ width: '192px' }}></div>
+              <div className={styles.illustLine} style={{ width: '256px' }}></div>
+              <div className={styles.illustLine} style={{ width: '160px' }}></div>
             </div>
           </div>
         )}
@@ -67,44 +79,67 @@ const AISuggestionPanel = ({
                         <Leaf size={16} className={styles.resultHeaderIcon} />
                         <h4 className={styles.resultHeaderTitle}>Sustainable Version</h4>
                     </div>
-                    <Badge text={focusArea ? focusArea.replace(/_/g, ' ') : 'ENERGY EFFICIENCY'} color="success" size="sm" />
+                    <Badge text={dimension || focusArea.replace(/_/g, ' ')} color="success" size="sm" />
                 </div>
                 
                 <div className={styles.resultContentBox}>
-                    <p className={styles.resultText}>"{suggestion}"</p>
-                    
-                    <div className={styles.criteriaSection}>
-                        <h5 className={styles.criteriaTitle}>Acceptance Criteria</h5>
-                        <ul className={styles.criteriaList}>
-                            {acceptanceCriteria.length > 0 ? (
-                                acceptanceCriteria.map((criterion, idx) => (
+                    {type === 'story' ? (
+                      <>
+                        <p className={styles.resultText}>"{suggestion}"</p>
+                        <div className={styles.criteriaSection}>
+                            <h5 className={styles.criteriaTitle}>Acceptance Criteria</h5>
+                            <ul className={styles.criteriaList}>
+                                {acceptanceCriteria.map((criterion, idx) => (
                                     <li key={idx} className={styles.criteriaItem}>
                                         <Check size={15} className={styles.checkIcon} />
                                         <span>{criterion}</span>
                                     </li>
-                                ))
-                            ) : (
-                                <>
-                                    <li className={styles.criteriaItem}>
-                                        <Check size={15} className={styles.checkIcon} />
-                                        <span>System defaults to 'Standard' if screen size &lt; 7 inches</span>
-                                    </li>
-                                    <li className={styles.criteriaItem}>
-                                        <Check size={15} className={styles.checkIcon} />
-                                        <span>User can toggle 'Eco-Mode' to limit data usage by 40%</span>
-                                    </li>
-                                    <li className={styles.criteriaItem}>
-                                        <Check size={15} className={styles.checkIcon} />
-                                        <span>Server selection prioritized by green energy certification</span>
-                                    </li>
-                                </>
-                            )}
-                        </ul>
-                    </div>
-                    {co2ImpactNote && (
-                        <div style={{ marginTop: '16px', fontSize: '13px', color: '#64748b', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                            <Leaf size={14} style={{ flexShrink: 0, marginTop: '2px', color: '#10b981' }} />
-                            <span>{co2ImpactNote}</span>
+                                ))}
+                            </ul>
+                        </div>
+                      </>
+                    ) : (
+                      <div className={styles.useCaseResult}>
+                        <h5 className={styles.useCaseTitleResult}>{suggestion}</h5>
+                        <div className={styles.flowSection}>
+                          <h6 className={styles.flowTitle}>Optimized Flow</h6>
+                          <div className={styles.flowList}>
+                            {sustainableFlow.map((step, idx) => {
+                              const stepText = typeof step === 'object' ? step.description : step;
+                              const action = typeof step === 'object' ? step.action : null;
+                              const dim = typeof step === 'object' ? step.sustainabilityDimension : null;
+
+                              return (
+                                <div key={idx} className={`${styles.flowStepItem} ${action ? styles[`action${action}`] : ''}`}>
+                                  <div className={styles.flowStepNumber}>{idx + 1}</div>
+                                  <div className={styles.flowStepContent}>
+                                    <div className={styles.flowStepText}>{stepText}</div>
+                                    {dim && <span className={styles.stepDimensionBadge}>{dim}</span>}
+                                  </div>
+                                  {action && action !== 'KEEP' && (
+                                    <div className={styles.actionBadge} data-action={action}>
+                                      {action}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {sustainabilityNotes && (
+                          <div className={styles.notesSection}>
+                            <h6 className={styles.notesTitle}>Sustainability Notes</h6>
+                            <p className={styles.notesText}>{sustainabilityNotes}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    {(co2ImpactNote || co2SavingPerHour) && (
+                        <div className={styles.impactSection}>
+                            <Leaf size={14} className={styles.impactIcon} />
+                            <span>{co2ImpactNote || `Est. saving: ${co2SavingPerHour} / hour`}</span>
                         </div>
                     )}
                 </div>
@@ -113,8 +148,8 @@ const AISuggestionPanel = ({
                     <Button variant="primary" onClick={onAccept} className={styles.acceptButton}>
                         <Check size={14} style={{ marginRight: '8px' }}/> Accept
                     </Button>
-                    <Button variant="outline" onClick={onReject} className={styles.rejectButton}>
-                        Reject
+                    <Button variant="outline" onClick={onReject} className={styles.regenerateButton}>
+                        Regenerate
                     </Button>
                 </div>
             </div>

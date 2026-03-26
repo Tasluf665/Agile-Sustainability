@@ -1,0 +1,188 @@
+.sustainablePanel {
+  background-color: var(--white, #ffffff);
+  border: 2px solid #1c5f20;
+  border-radius: 12px;
+  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.header {
+  background-color: rgba(28, 95, 32, 0.05);
+  border-bottom: 1px solid rgba(28, 95, 32, 0.1);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.headerTitle {
+  color: #1c5f20;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin: 0;
+}
+
+.aiBadge {
+  background-color: #1c5f20;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: rgba(28, 95, 32, 0.6);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 15px;
+}
+
+.value {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.text {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.flowList {
+  list-style-type: decimal;
+  padding-left: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.flowItem {
+  padding: 4px 0;
+  padding-left: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #475569;
+}
+
+.flowItemHighlight {
+  background-color: rgba(28, 95, 32, 0.1);
+  border-left: 4px solid #1c5f20;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 16px 12px;
+  color: #1c5f20;
+  font-weight: 500;
+  list-style-position: inside;
+  margin-left: -20px;
+}
+
+.stepText {
+  display: inline;
+}
+
+.notesBox {
+  background-color: rgba(28, 95, 32, 0.05);
+  border: 1px solid rgba(28, 95, 32, 0.2);
+  border-radius: 8px;
+  padding: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notesTitle {
+  color: #1c5f20;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notesText {
+  color: #475569;
+  font-size: 12px;
+  line-height: 19.5px;
+  margin: 0;
+}
+
+.pillsContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pill {
+  background-color: rgba(28, 95, 32, 0.1);
+  border: 1px solid rgba(28, 95, 32, 0.2);
+  border-radius: 8px;
+  padding: 5px 9px;
+  color: #1c5f20;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.acceptButton {
+  min-width: 140px;
+}
+
+.rejectButton {
+  min-width: 140px;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
+}
+
+.rejectButton:hover:not(:disabled) {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}

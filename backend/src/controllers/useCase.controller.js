@@ -49,11 +49,7 @@ export const createUseCase = async (req, res) => {
       return res.status(400).json({ message: 'UserStory ID, Project ID, title, and actor are required' });
     }
 
-    // Enforce 1-to-[0..1] mapping between UserStory and UseCase
-    const existingUseCase = await UseCase.findOne({ userStoryId });
-    if (existingUseCase) {
-      return res.status(400).json({ message: 'A Use Case already exists for this User Story. Only one is allowed.' });
-    }
+    // Removed restriction: Allowing multiple Use Cases per User Story as requested by user.
 
     const newUseCase = new UseCase({
       userStoryId,
@@ -84,7 +80,19 @@ export const createUseCase = async (req, res) => {
 // @access  Private
 export const updateUseCase = async (req, res) => {
   try {
-    const { title, actor, precondition, mainFlow, postcondition, status } = req.body;
+    const { 
+      title, 
+      actor, 
+      precondition, 
+      mainFlow, 
+      postcondition, 
+      status,
+      sustainableTitle,
+      sustainableFlow,
+      sustainabilityNotes,
+      co2SavingPerHour,
+      dimension
+    } = req.body;
 
     const useCase = await UseCase.findById(req.params.id);
 
@@ -98,6 +106,13 @@ export const updateUseCase = async (req, res) => {
     useCase.mainFlow = mainFlow !== undefined ? mainFlow : useCase.mainFlow;
     useCase.postcondition = postcondition !== undefined ? postcondition : useCase.postcondition;
     useCase.status = status !== undefined ? status : useCase.status;
+    
+    // Sustainable fields
+    useCase.sustainableTitle = sustainableTitle !== undefined ? sustainableTitle : useCase.sustainableTitle;
+    useCase.sustainableFlow = sustainableFlow !== undefined ? sustainableFlow : useCase.sustainableFlow;
+    useCase.sustainabilityNotes = sustainabilityNotes !== undefined ? sustainabilityNotes : useCase.sustainabilityNotes;
+    useCase.co2SavingPerHour = co2SavingPerHour !== undefined ? co2SavingPerHour : useCase.co2SavingPerHour;
+    useCase.dimension = dimension !== undefined ? dimension : useCase.dimension;
 
     const updatedUseCase = await useCase.save();
     res.json(updatedUseCase);
@@ -173,6 +188,54 @@ export const applySustainableUseCase = async (req, res) => {
     res.json({ useCase: updatedUseCase, suggestion });
   } catch (error) {
     console.error(`Error in applySustainableUseCase: ${error.message}`);
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+// @desc    Accept the AI-generated sustainable use case
+// @route   PATCH /api/use-cases/:id/accept
+// @access  Private
+export const acceptSustainableUseCase = async (req, res) => {
+  try {
+    const useCase = await UseCase.findById(req.params.id);
+
+    if (!useCase) {
+      return res.status(404).json({ message: 'Use Case not found' });
+    }
+
+    useCase.status = 'APPROVED';
+    const updatedUseCase = await useCase.save();
+    res.json(updatedUseCase);
+  } catch (error) {
+    console.error(`Error in acceptSustainableUseCase: ${error.message}`);
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+// @desc    Reject the AI-generated sustainable use case
+// @route   PATCH /api/use-cases/:id/reject
+// @access  Private
+export const rejectSustainableUseCase = async (req, res) => {
+  try {
+    const useCase = await UseCase.findById(req.params.id);
+
+    if (!useCase) {
+      return res.status(404).json({ message: 'Use Case not found' });
+    }
+
+    useCase.sustainableTitle = '';
+    useCase.sustainableFlow = [];
+    useCase.sustainabilityNotes = '';
+    useCase.co2SavingPerHour = '';
+    useCase.dimension = '';
+    useCase.status = 'DRAFT';
+    
+    // Resetting undefined if string properties are strict, but empty string is fine based on Create definition
+
+    const updatedUseCase = await useCase.save();
+    res.json(updatedUseCase);
+  } catch (error) {
+    console.error(`Error in rejectSustainableUseCase: ${error.message}`);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };

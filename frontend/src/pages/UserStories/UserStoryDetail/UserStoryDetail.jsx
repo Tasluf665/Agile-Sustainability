@@ -253,14 +253,14 @@ const UserStoryDetail = () => {
               ) : useCases && useCases.length > 0 ? (
                 useCases.map(uc => (
                   <UseCaseRow
-                    key={uc.id}
-                    id={uc.id}
+                    key={uc._id || uc.id}
+                    id={uc.customId || ''}
                     title={uc.title}
                     status={uc.status}
-                    lastEdited={uc.lastEdited}
-                    originalSummary={uc.originalSummary}
-                    sustainableSummary={uc.sustainableSummary}
-                    onViewDetails={() => handleViewUseCase(uc.id)}
+                    lastEdited={uc.updatedAt ? `Edited ${new Date(uc.updatedAt).toLocaleDateString()}` : ''}
+                    originalTitle={uc.title}
+                    sustainableTitle={uc.sustainableTitle}
+                    onViewDetails={() => handleViewUseCase(uc._id || uc.id)}
                   />
                 ))
               ) : (

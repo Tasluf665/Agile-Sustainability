@@ -1,0 +1,110 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.breadcrumbLinkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.backLink {
+  color: var(--slate-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.backLink:hover {
+  background-color: var(--slate-100);
+}
+
+.breadcrumbMuted {
+  color: var(--slate-400);
+  text-decoration: none;
+}
+
+.breadcrumbActive {
+  color: var(--slate-900);
+  font-weight: 500;
+}
+
+.breadcrumbChevron {
+  color: var(--slate-300);
+}
+
+.contentWrapper {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.formCard {
+  background-color: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.generateArea {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--slate-100);
+}
+
+.generateButtonWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.addUseCaseBtn {
+    margin-top: 4px;
+}
+
+.rightPanelWrapper {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  .contentWrapper {
+    grid-template-columns: 1fr;
+  }
+}
