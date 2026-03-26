@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AppShell from '../../../components/layout/AppShell/AppShell';
 import PageHeader from '../../../components/layout/PageHeader/PageHeader';
@@ -231,11 +231,18 @@ const UseCaseDetail = () => {
 
   const breadcrumbText = (
     <div className={styles.breadcrumbLinkRow}>
-      <span className={styles.breadcrumbMuted}>Projects</span>
+      <Link to={`/projects/${projectId}/user-stories/${storyId}`} className={styles.backLink}>
+        <ArrowLeft size={16} />
+      </Link>
+      <Link to="/projects" className={styles.breadcrumbMuted}>Projects</Link>
       <span className={styles.breadcrumbChevron}>/</span>
-      <span className={styles.breadcrumbMuted}>{breadcrumbProjectName}</span>
+      <Link to={`/projects/${projectId}`} className={styles.breadcrumbMuted}>
+        {breadcrumbProjectName}
+      </Link>
       <span className={styles.breadcrumbChevron}>/</span>
-      <span className={styles.breadcrumbMuted}>{breadcrumbStoryName}</span>
+      <Link to={`/projects/${projectId}/user-stories/${storyId}`} className={styles.breadcrumbMuted}>
+        {breadcrumbStoryName}
+      </Link>
       <span className={styles.breadcrumbChevron}>/</span>
       <span className={styles.breadcrumbActive}>{ucCode}</span>
     </div>

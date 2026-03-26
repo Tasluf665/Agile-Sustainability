@@ -52,24 +52,43 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  font-family: 'Inter', sans-serif;
-  margin-top: 4px;
-}
-
-.breadcrumbMuted {
-  color: #64748b;
-  font-weight: 500;
-}
-
-.breadcrumbChevron {
-  color: #94a3b8;
   font-size: 14px;
 }
 
+.backLink {
+  color: var(--color-slate-500, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--color-slate-900, #0f172a);
+}
+
+.breadcrumbMuted {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: rgba(28, 95, 32, 0.6);
+  text-decoration: none;
+}
+
+.breadcrumbMuted:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbChevron {
+  font-family: 'Inter', sans-serif;
+  color: rgba(28, 95, 32, 0.6);
+}
+
 .breadcrumbActive {
-  color: #1c5f20;
-  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: var(--color-slate-900, #0f172a);
 }
 
 .generateTriggerWrapper {

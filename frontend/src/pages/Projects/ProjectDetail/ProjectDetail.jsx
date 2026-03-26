@@ -10,12 +10,13 @@ import StatCard from '../../../components/common/StatCard/StatCard';
 import SustainabilityScoreChart from '../../../components/sustainability/SustainabilityScoreChart/SustainabilityScoreChart';
 import ActivityFeed from '../../../components/common/ActivityFeed/ActivityFeed';
 import UserStoryRow from '../../../components/sustainability/UserStoryRow/UserStoryRow';
-import { PlusCircle, ArrowRight } from 'lucide-react';
+import { PlusCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import styles from './ProjectDetail.module.css';
 
 // Thunks and Selectors
 import { fetchProjects } from '../../../store/slices/projectsSlice';
 import { fetchUserStoriesByProject } from '../../../store/slices/userStoriesSlice';
+import { fetchUseCasesByProject } from '../../../store/slices/useCasesSlice';
 import { fetchProjectActivity } from '../../../store/slices/activitySlice';
 import { fetchSustainabilityScore } from '../../../store/slices/analyticsSlice';
 import {
@@ -53,6 +54,7 @@ const ProjectDetail = () => {
   const activityFeed = useSelector(state => state.activity.items);
   const chartData = useSelector(state => state.analytics.sustainabilityScores);
   const isStoriesLoading = useSelector(state => state.userStories.isLoading);
+  const useCases = useSelector(state => state.useCases.useCases);
 
   useEffect(() => {
     // We fetch project list if missing to populate title. 
@@ -60,6 +62,7 @@ const ProjectDetail = () => {
       dispatch(fetchProjects());
     }
     dispatch(fetchUserStoriesByProject(projectId));
+    dispatch(fetchUseCasesByProject(projectId));
     dispatch(fetchProjectActivity(projectId));
     dispatch(fetchSustainabilityScore(projectId));
   }, [dispatch, projectId, project]);
@@ -90,11 +93,14 @@ const ProjectDetail = () => {
   );
 
   // Custom styled breadcrumbs
-  const breadcrumbText = (
+  const breadcrumbs = (
     <div className={styles.breadcrumbLinkRow}>
-      <span className={styles.breadcrumbMuted}>Projects</span>
+      <Link to="/projects" className={styles.backLink}>
+        <ArrowLeft size={16} />
+      </Link>
+      <Link to="/projects" className={styles.breadcrumbMuted}>Projects</Link>
       <span className={styles.breadcrumbChevron}>/</span>
-      <span className={styles.breadcrumbActive}>{project ? project.name : "Loading..."}</span>
+      <span className={styles.breadcrumbActive}>{project ? project.name : "Project"}</span>
     </div>
   );
 
@@ -125,6 +131,8 @@ const ProjectDetail = () => {
               status={story.status}
               focusArea={story.focusArea}
               title={story.title}
+              useCaseCount={useCases.filter(uc => uc.userStoryId === (story._id || story.id)).length}
+              assignees={story.assignees}
               onViewStory={() => handleViewStory(story._id || story.id)}
               onAddUseCase={() => handleAddUseCase(story._id || story.id)}
             />
@@ -166,7 +174,7 @@ const ProjectDetail = () => {
           <div className={styles.headerWrapper}>
             <PageHeader
               title={project ? project.name : "Loading..."}
-              subtitle={breadcrumbText}
+              subtitle={breadcrumbs}
               actions={HeaderActions}
             />
           </div>

@@ -13,6 +13,18 @@ export const fetchUseCasesByStory = createAsyncThunk(
   }
 );
 
+export const fetchUseCasesByProject = createAsyncThunk(
+  'useCases/fetchByProject',
+  async (projectId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/use-cases?projectId=${projectId}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch use cases');
+    }
+  }
+);
+
 export const createUseCase = createAsyncThunk(
   'useCases/create',
   async (useCaseData, { rejectWithValue }) => {
@@ -116,6 +128,19 @@ const useCasesSlice = createSlice({
         state.useCases = action.payload;
       })
       .addCase(fetchUseCasesByStory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Fetch By Project
+      .addCase(fetchUseCasesByProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUseCasesByProject.fulfilled, (state, action) => {
+        state.loading = false;
+        state.useCases = action.payload;
+      })
+      .addCase(fetchUseCasesByProject.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
