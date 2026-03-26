@@ -25,14 +25,10 @@ import {
   selectTotalUseCaseCount,
   selectActiveUserStories
 } from '../../../store/selectors/storySelectors';
-import { toggleModal } from '../../../store/slices/uiSlice';
 
 const TABS = [
   { label: 'Overview', value: 'overview' },
-  { label: 'User Stories', value: 'stories' },
-  { label: 'Team', value: 'team' },
-  { label: 'Timeline', value: 'timeline' },
-  { label: 'Impact Analysis', value: 'impact' }
+  { label: 'User Stories', value: 'stories' }
 ];
 
 const ProjectDetail = () => {
@@ -161,6 +157,37 @@ const ProjectDetail = () => {
     </div>
   );
 
+  const renderStoriesTab = () => (
+    <div className={styles.tabContent}>
+      <div className={styles.tabHeader}>
+        <h3 className={styles.sectionTitle}>Project User Stories</h3>
+      </div>
+
+      <div className={styles.storiesList}>
+        {isStoriesLoading ? (
+          <div className={styles.loader}>Loading stories...</div>
+        ) : filteredStories.length > 0 ? (
+          filteredStories.map(story => (
+            <UserStoryRow
+              key={story._id || story.id}
+              status={story.status}
+              focusArea={story.focusArea}
+              title={story.title}
+              useCaseCount={useCases.filter(uc => uc.userStoryId === (story._id || story.id)).length}
+              assignees={story.assignees}
+              onViewStory={() => handleViewStory(story._id || story.id)}
+              onAddUseCase={() => handleAddUseCase(story._id || story.id)}
+            />
+          ))
+        ) : (
+          <div className={styles.emptyState}>
+            {searchQuery ? "No stories match your search." : "No stories found in this project."}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   const renderEmptyTab = (tabName) => (
     <div className={styles.emptyTab}>
       <h2>{tabName} tab content goes here.</h2>
@@ -184,7 +211,9 @@ const ProjectDetail = () => {
         </div>
 
         <div className={styles.scrollableContent}>
-          {activeTab === 'overview' ? renderOverviewTab() : renderEmptyTab(TABS.find(t => t.value === activeTab)?.label)}
+          {activeTab === 'overview' ? renderOverviewTab() :
+            activeTab === 'stories' ? renderStoriesTab() :
+              renderEmptyTab(TABS.find(t => t.value === activeTab)?.label)}
         </div>
       </div>
     </AppShell>
