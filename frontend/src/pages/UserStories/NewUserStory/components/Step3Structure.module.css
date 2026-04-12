@@ -1,0 +1,298 @@
+.step3Layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  align-items: start;
+  width: 100%;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Agent Header */
+.agentHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.agentBadge {
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tipBadge {
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Draft Card */
+.draftCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.draftCardBlur {
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, rgba(28, 95, 32, 0.2) 0%, rgba(52, 211, 153, 0.2) 100%);
+  opacity: 0.25;
+  filter: blur(4px);
+  border-radius: 12px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cardInner {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  padding: 12px 16px;
+  background: linear-gradient(to right, #f8fafc, white);
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardHeaderLabel {
+  font-size: 11px;
+  font-weight: 900;
+  color: #94a3b8;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.draftArea {
+  min-height: 320px;
+  padding: 24px;
+  width: 100%;
+}
+
+.draftText {
+  font-family: 'Liberation Mono', monospace;
+  font-size: 16px;
+  line-height: 1.625;
+  color: #191d17;
+  border: none;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  background: transparent;
+}
+
+/* Action Buttons Overlay */
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.generateButton {
+  background: #1c5f20;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0px 10px 15px -3px rgba(28, 95, 32, 0.2);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.generateButton:hover {
+  background: #164a19;
+  transform: translateY(-1px);
+}
+
+.backButton {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.backButton:hover {
+  background: #f8fafc;
+}
+
+/* Audit Log Card */
+.auditLogCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.auditHeader {
+  background: #1c5f20;
+  padding: 16px;
+  color: white;
+}
+
+.auditTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.auditSubtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.auditContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.changeList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.changeItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.checkIcon {
+  width: 20px;
+  height: 20px;
+  background: #d1fae5;
+  color: #047857;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.changeText {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.confidenceSection {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 24px;
+}
+
+.confidenceBox {
+  background: #ecefe6;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.confidenceLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.confidenceBarRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.barBg {
+  flex: 1;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: #1c5f20;
+  border-radius: 999px;
+}
+
+.confidenceValue {
+  font-size: 12px;
+  font-weight: 900;
+  color: #1c5f20;
+}
+
+.auditFooter {
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.analysisId {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.historyIcon {
+  color: #94a3b8;
+}

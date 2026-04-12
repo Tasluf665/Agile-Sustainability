@@ -1,0 +1,247 @@
+.step4Layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.comparisonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Badges */
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.optimizedBadge {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.sustainableBadge {
+  background: #f5f3ff;
+  color: #7c3aed;
+  border: 1px solid #ddd6fe;
+}
+
+/* Content Cards */
+.contentCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sustainableCard {
+  border-left: 4px solid #1c5f20;
+}
+
+.cardHeader {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.functionalHeader {
+  background: #eff6ff;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.sustainableHeader {
+  background: #f0fdf4;
+  border-bottom: 1px solid #dcfce7;
+}
+
+.headerLabel {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.functionalLabel { color: #2563eb; }
+.sustainableLabel { color: #1c5f20; }
+
+.cardBody {
+  padding: 24px;
+}
+
+.storyText {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #191d17;
+  font-weight: 400;
+  margin: 0;
+}
+
+.storyHighlight {
+  color: #1c5f20;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(28, 95, 32, 0.3);
+}
+
+/* Criteria List */
+.criteriaList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.criteriaItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.bullet {
+  width: 6px;
+  height: 6px;
+  background: #3b82f6;
+  border-radius: 999px;
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+.greenBullet {
+  background: #1c5f20;
+}
+
+/* Trade-off Alert */
+.tradeoffAlert {
+  background: #fff7ed;
+  border: 1px solid #ffedd5;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.tradeoffIcon {
+  color: #c2410c;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tradeoffText {
+  font-size: 13px;
+  color: #9a3412;
+  line-height: 1.5;
+}
+
+.tradeoffTitle {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Final Actions */
+.actionRow {
+  display: flex;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.acceptButton {
+  background: #1c5f20;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0px 10px 15px -3px rgba(28, 95, 32, 0.2);
+  transition: all 0.2s ease;
+}
+
+.acceptButton:hover {
+  background: #164a19;
+  transform: translateY(-1px);
+}
+
+.keepOriginalButton {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.keepOriginalButton:hover {
+  background: #f8fafc;
+  color: #191d17;
+}
+
+/* Why Matters Section */
+.whyMatters {
+  background: rgba(28, 95, 32, 0.05);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: 12px;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.whyHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.whyTitle {
+  font-size: 12px;
+  font-weight: 900;
+  color: #1c5f20;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.whyText {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4f694a;
+}

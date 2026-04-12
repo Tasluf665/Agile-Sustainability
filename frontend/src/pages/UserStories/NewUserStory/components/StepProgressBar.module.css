@@ -1,0 +1,66 @@
+.progressBarWrapper {
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+.progressContainer {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  height: 62px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.stepItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.stepNumber {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: -0.6px;
+  color: #a8a29e;
+  opacity: 0.4;
+  text-transform: uppercase;
+}
+
+.stepLabel {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #a8a29e;
+}
+
+.highlightedStep {
+  background: #1c5f20;
+  position: relative;
+  overflow: hidden;
+}
+
+.highlightedStep::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(28, 95, 32, 0.8), rgba(28, 95, 32, 0.4));
+  pointer-events: none;
+}
+
+.stepNumberActive {
+  color: white;
+  opacity: 0.6;
+}
+
+.stepLabelActive {
+  color: white;
+  font-weight: 700;
+}

@@ -1,190 +1,132 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Sparkles, Info } from 'lucide-react';
-import AppShell from '../../../components/layout/AppShell/AppShell';
-import PageHeader from '../../../components/layout/PageHeader/PageHeader';
-import Button from '../../../components/common/Button/Button';
-import Textarea from '../../../components/common/Textarea/Textarea';
-import InfoBox from '../../../components/common/InfoBox/InfoBox';
-import AISuggestionPanel from '../../../components/sustainability/AISuggestionPanel/AISuggestionPanel';
-import { generateSustainableStory, clearAiSuggestion, createUserStory } from '../../../store/slices/userStoriesSlice';
+import { ChevronRight } from 'lucide-react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchProjects } from '../../../store/slices/projectsSlice';
+import AppShell from '../../../components/layout/AppShell/AppShell';
+import StepProgressBar from './components/StepProgressBar';
+import Step1WriteStory from './components/Step1WriteStory';
+import Step2QualityCheck from './components/Step2QualityCheck';
+import Step3Structure from './components/Step3Structure';
+import Step4Sustainability from './components/Step4Sustainability';
 import styles from './NewUserStory.module.css';
 
 const NewUserStory = () => {
   const { projectId } = useParams();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [currentStep, setCurrentStep] = useState(1);
   const [description, setDescription] = useState('');
-  
-  const projects = useSelector(state => state.projects.projects);
-  const project = projects.find(p => p.id === projectId);
-  const aiState = useSelector(state => state.userStories.aiSuggestion);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const { projects } = useSelector((state) => state.projects);
+  const project = projects.find(p => p.id === projectId || p._id === projectId);
 
   useEffect(() => {
-    if (!project && projects.length === 0) {
+    if (projects.length === 0) {
       dispatch(fetchProjects());
     }
-    return () => {
-      dispatch(clearAiSuggestion());
-    };
-  }, [dispatch, project, projects.length]);
+  }, [dispatch, projects.length]);
 
-  const handleGenerate = () => {
-    if (description.trim()) {
-      dispatch(generateSustainableStory(description));
+  const steps = [
+    { id: 1, label: 'Write Story' },
+    { id: 2, label: 'Quality Check' },
+    { id: 3, label: 'Structure' },
+    { id: 4, label: 'Sustainability' }
+  ];
+
+  // Mock data for Step 2
+  const investResults = [
+    { title: 'Independent', status: 'PASS', description: 'Story is self-contained with no technical dependencies.' },
+    { title: 'Negotiable', status: 'PASS', description: 'The focus is on the "What" and "Why", leaving "How" for the dev team.' },
+    { title: 'Valuable', status: 'PASS', description: 'Provides clear business value to the end user.' },
+    { title: 'Estimable', status: 'FAIL', description: 'Context is too vague to accurately gauge implementation effort.' },
+    { title: 'Small', status: 'FAIL', description: 'This draft encompasses multiple high-level user goals (Epic).' },
+    { title: 'Testable', status: 'PASS', description: 'Acceptance criteria can be defined based on the description.' }
+  ];
+
+  const issues = [
+    { text: 'Missing User Persona (The ', highlight: 'WHO', suffix: ' is unclear)' },
+    { text: 'Definition of Done is ', highlight: 'Too Vague' },
+    { text: 'Technological ', highlight: 'Dependencies', suffix: ' detected' }
+  ];
+
+  const handleNext = () => {
+    if (currentStep < 4) {
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  const handleAddUserStory = () => {
-    if (description.trim()) {
-      dispatch(createUserStory({
-        projectId,
-        title: description.substring(0, 40) + (description.length > 40 ? '...' : ''),
-        description: description,
-        status: 'DRAFT',
-        acceptanceCriteria: []
-      })).then(() => {
-        dispatch(clearAiSuggestion());
-        navigate(`/projects/${projectId}`);
-      });
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
     }
   };
 
-  const handleAccept = () => {
-    dispatch(createUserStory({
-      projectId,
-      title: aiState.result.description.substring(0, 40) + (aiState.result.description.length > 40 ? '...' : ''),
-      description: description,
-      sustainableDescription: aiState.result.description,
-      acceptanceCriteria: aiState.result.criteria || [],
-      focusArea: aiState.result.focusArea,
-      co2ImpactNote: aiState.result.co2ImpactNote,
-      aiGenerated: true,
-      status: 'DRAFT'
-    })).then(() => {
-      dispatch(clearAiSuggestion());
-      navigate(`/projects/${projectId}`);
-    });
+  const handleFinish = () => {
+    // Navigation to project detail after completion
+    navigate(`/projects/${projectId}`);
   };
 
-  const handleReject = () => {
-    dispatch(clearAiSuggestion());
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <Step1WriteStory 
+            description={description}
+            setDescription={setDescription}
+            onNext={handleNext}
+            isGenerating={isGenerating}
+          />
+        );
+      case 2:
+        return (
+          <Step2QualityCheck 
+            investResults={investResults}
+            issues={issues}
+            onNext={handleNext}
+          />
+        );
+      case 3:
+        return (
+          <Step3Structure 
+            onNext={handleNext}
+            onBack={handleBack}
+          />
+        );
+      case 4:
+        return (
+          <Step4Sustainability 
+            onAccept={handleFinish}
+            onBack={handleBack}
+          />
+        );
+      default:
+        return null;
+    }
   };
-
-  const breadcrumbs = (
-    <div className={styles.breadcrumbLinkRow}>
-      <Link to="/projects" className={styles.breadcrumbMuted}>
-        Projects
-      </Link>
-      <span className={styles.breadcrumbChevron}>/</span>
-      <Link to={`/projects/${projectId}`} className={styles.breadcrumbMuted}>
-        {project ? project.name : "Project"}
-      </Link>
-      <span className={styles.breadcrumbChevron}>/</span>
-      <span className={styles.breadcrumbActive}>New Story</span>
-    </div>
-  );
-
-  // Determine panel status based on aiState
-  let status = 'waiting';
-  if (aiState.isGenerating) {
-    status = 'loading';
-  } else if (aiState.result) {
-    status = 'result';
-  }
 
   return (
     <AppShell>
       <div className={styles.pageWrapper}>
-        <div className={styles.headerWrapper}>
-          <PageHeader
-            title="New User Story"
-            subtitle={breadcrumbs}
-          />
-        </div>
-        
-        <div className={styles.contentWrapper}>
-          <div className={styles.splitLayout}>
-            {/* Left Panel */}
-            <div className={styles.leftColumn}>
-                <div className={styles.leftPanel}>
-                    <div className={styles.panelHeader}>
-                        <h3 className={styles.panelTitle}>Write Your User Story</h3>
-                        <p className={styles.panelSubtitle}>
-                            Define your feature requirements following the standard agile format. Focus on the value provided to the end user.
-                        </p>
-                    </div>
-                    
-                    <div className={styles.formGroup}>
-                        <label className={styles.inputLabel}>User Story Description</label>
-                        <Textarea 
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="As a user, I want to..."
-                            rows={8}
-                        />
-                        
-                        <div className={styles.generateActionWrapper}>
-                            <Button 
-                                variant="primary" 
-                                onClick={handleGenerate} 
-                                isLoading={aiState.isGenerating}
-                                disabled={!description.trim() || aiState.isGenerating}
-                                fullWidth
-                            >
-                                <Sparkles size={16} style={{ marginRight: '8px' }} />
-                                Generate Sustainable Version
-                            </Button>
-                            <Button 
-                                variant="outline" 
-                                onClick={handleAddUserStory} 
-                                disabled={!description.trim() || aiState.isGenerating}
-                                fullWidth
-                            >
-                                Add User Story
-                            </Button>
-                        </div>
-                        
-                        <div className={styles.tipsRow}>
-                            <Info size={12} className={styles.tipIcon} />
-                            <span className={styles.tipText}>Tips: Be specific about the persona and the outcome.</span>
-                        </div>
-                    </div>
-                </div>
+        <div className={styles.mainContainer}>
+          {/* Header & Breadcrumbs matching Figma design context */}
+          <header className={styles.headerSection}>
+            <nav className={styles.breadcrumbRow}>
+              <Link to="/projects" className={styles.breadcrumbLink}>PROJECTS</Link>
+              <span className={styles.breadcrumbChevron}><ChevronRight size={12} /></span>
+              <Link to={`/projects/${projectId}`} className={styles.breadcrumbLink}>
+                {project ? project.name.toUpperCase() : 'LOADING...'}
+              </Link>
+              <span className={styles.breadcrumbChevron}><ChevronRight size={12} /></span>
+              <span className={`${styles.breadcrumbLink} ${styles.breadcrumbActive}`}>NEW USER STORY</span>
+            </nav>
+            <h1 className={styles.pageTitle}>New User Story</h1>
+          </header>
 
-                <div className={styles.infoBoxWrapper}>
-                    <InfoBox 
-                        icon={Info}
-                        title="Why Sustainable User Stories?"
-                        description={
-                            <>
-                                By incorporating sustainability into your user stories, you reduce<br />
-                                digital waste, optimize server calls, and lower the carbon footprint of<br />
-                                your software components from the design phase.
-                            </>
-                        }
-                    />
-                </div>
-            </div>
-            
-            {/* Right Panel */}
-            <div className={styles.rightColumn}>
-              <AISuggestionPanel 
-                status={status}
-                suggestion={aiState.result ? aiState.result.description : null}
-                acceptanceCriteria={aiState.result ? aiState.result.criteria : []}
-                focusArea={aiState.result ? aiState.result.focusArea : 'ENERGY EFFICIENCY'}
-                co2ImpactNote={aiState.result ? aiState.result.co2ImpactNote : ''}
-                onAccept={handleAccept}
-                onReject={handleReject}
-                usageCount={12}
-                usageUnit="teammates"
-                usagePeriod="week"
-              />
-            </div>
-          </div>
+          <StepProgressBar currentStep={currentStep} steps={steps} />
+
+          {renderCurrentStep()}
         </div>
       </div>
     </AppShell>
