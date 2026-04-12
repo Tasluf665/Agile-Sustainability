@@ -2,8 +2,8 @@ import React from 'react';
 import { Check, Clock } from 'lucide-react';
 import styles from './Step3Structure.module.css';
 
-const AuditLogCard = ({ confidence = 94, analysisId = '#GS-4491' }) => {
-  const changes = [
+const AuditLogCard = ({ confidence = 94, analysisId = '#GS-4491', changes = [] }) => {
+  const displayChanges = changes.length > 0 ? changes.map(c => ({ text: c })) : [
     { text: 'Added a specific user role (registered viewer) instead of generic "user".' },
     { text: 'Defined "historical data" to specify last three projects.' },
     { text: 'Quantified performance requirements (2.5 seconds).' },
@@ -19,7 +19,7 @@ const AuditLogCard = ({ confidence = 94, analysisId = '#GS-4491' }) => {
 
       <div className={styles.auditContent}>
         <div className={styles.changeList}>
-          {changes.map((item, index) => (
+          {displayChanges.map((item, index) => (
             <div key={index} className={styles.changeItem}>
               <div className={styles.checkIcon}>
                 <Check size={12} strokeWidth={3} />

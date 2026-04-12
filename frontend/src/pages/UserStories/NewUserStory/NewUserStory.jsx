@@ -9,6 +9,7 @@ import Step1WriteStory from './components/Step1WriteStory';
 import Step2QualityCheck from './components/Step2QualityCheck';
 import Step3Structure from './components/Step3Structure';
 import Step4Sustainability from './components/Step4Sustainability';
+import api from '../../../services/api';
 import styles from './NewUserStory.module.css';
 
 const NewUserStory = () => {
@@ -18,6 +19,11 @@ const NewUserStory = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [description, setDescription] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  
+  // AI Results State
+  const [qualityResults, setQualityResults] = useState(null);
+  const [structuredData, setStructuredData] = useState(null);
+  const [sustainabilityData, setSustainabilityData] = useState(null);
 
   const { projects } = useSelector((state) => state.projects);
   const project = projects.find(p => p.id === projectId || p._id === projectId);
@@ -51,9 +57,86 @@ const NewUserStory = () => {
     { text: 'Technological ', highlight: 'Dependencies', suffix: ' detected' }
   ];
 
-  const handleNext = () => {
-    if (currentStep < 4) {
+  const handleNext = async () => {
+    if (currentStep === 1) {
+      await handleQualityCheck();
+    } else if (currentStep === 2) {
+      await handleRestructure();
+    } else if (currentStep === 3) {
+      await handleSustainability();
+    } else if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handleSustainability = async () => {
+    if (!structuredData?.structured) return;
+
+    setIsGenerating(true);
+    try {
+      const response = await api.post('/ai/generate-user-story', { 
+        originalDescription: structuredData.structured 
+      });
+      setSustainabilityData(response.data);
+      setCurrentStep(4);
+    } catch (error) {
+      console.error('Sustainability generation failed:', error);
+      alert('Failed to generate sustainable version. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleRestructure = async () => {
+    setIsGenerating(true);
+    try {
+      const response = await api.post('/ai/restructure', { story: description });
+      setStructuredData(response.data);
+      setCurrentStep(3);
+    } catch (error) {
+      console.error('Restructure failed:', error);
+      alert('Failed to restructure story. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleQualityCheck = async () => {
+    if (!description.trim()) return;
+    
+    setIsGenerating(true);
+    try {
+      const response = await api.post('/ai/check-quality', { story: description });
+      const data = response.data;
+      
+      // Map AI response to the format expected by Step 2
+      const mappedInvest = [
+        { title: 'Independent', status: data.independent.pass ? 'PASS' : 'FAIL', description: data.independent.note },
+        { title: 'Negotiable', status: data.negotiable.pass ? 'PASS' : 'FAIL', description: data.negotiable.note },
+        { title: 'Valuable', status: data.valuable.pass ? 'PASS' : 'FAIL', description: data.valuable.note },
+        { title: 'Estimable', status: data.estimable.pass ? 'PASS' : 'FAIL', description: data.estimable.note },
+        { title: 'Small', status: data.small.pass ? 'PASS' : 'FAIL', description: data.small.note },
+        { title: 'Testable', status: data.testable.pass ? 'PASS' : 'FAIL', description: data.testable.note }
+      ];
+      
+      const mappedIssues = data.issues.map(issueText => ({
+        text: issueText,
+        highlight: '', // We could potentially extract highlights if the AI provided them
+        suffix: ''
+      }));
+      
+      setQualityResults({
+        investResults: mappedInvest,
+        issues: mappedIssues,
+        score: data.score
+      });
+      
+      setCurrentStep(2);
+    } catch (error) {
+      console.error('Quality check failed:', error);
+      alert('Failed to check story quality. Please try again.');
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -82,14 +165,19 @@ const NewUserStory = () => {
       case 2:
         return (
           <Step2QualityCheck 
-            investResults={investResults}
-            issues={issues}
+            originalStory={description}
+            investResults={qualityResults?.investResults || []}
+            issues={qualityResults?.issues || []}
+            qualityScore={qualityResults?.score || 0}
             onNext={handleNext}
           />
         );
       case 3:
         return (
           <Step3Structure 
+            initialDraft={structuredData?.structured || ''}
+            acceptanceCriteria={structuredData?.acceptance_criteria || []}
+            auditChanges={structuredData?.changes || []}
             onNext={handleNext}
             onBack={handleBack}
           />
@@ -97,6 +185,9 @@ const NewUserStory = () => {
       case 4:
         return (
           <Step4Sustainability 
+            functionalStory={structuredData?.structured || ''}
+            functionalCriteria={structuredData?.acceptance_criteria || []}
+            sustainableData={sustainabilityData}
             onAccept={handleFinish}
             onBack={handleBack}
           />

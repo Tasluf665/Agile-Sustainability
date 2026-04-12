@@ -264,3 +264,30 @@
   text-align: center;
   line-height: 1.5;
 }
+
+/* Original Story Card */
+.originalStoryCard {
+  background: #fafaf9;
+  border: 1px dashed #d6d3d1;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+}
+
+.cardHeaderLabel {
+  font-size: 10px;
+  font-weight: 900;
+  color: #a8a29e;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.originalText {
+  font-size: 15px;
+  color: #44403c;
+  line-height: 1.5;
+  font-style: italic;
+  margin: 0;
+}

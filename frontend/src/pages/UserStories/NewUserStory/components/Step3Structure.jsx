@@ -3,17 +3,15 @@ import { Send, ArrowLeft, Info, FileText } from 'lucide-react';
 import AuditLogCard from './AuditLogCard';
 import styles from './Step3Structure.module.css';
 
-const Step3Structure = ({ onNext, onBack }) => {
-  const [draftContent, setDraftContent] = useState(
-`As a registered viewer,
-I want to access the historical carbon offset data of my previous three projects,
-So that I can generate a comparative report for the quarterly sustainability audit.
+const Step3Structure = ({ initialDraft, acceptanceCriteria, auditChanges, onNext, onBack }) => {
+  const [draftContent, setDraftContent] = useState(initialDraft || '');
 
-Acceptance Criteria:
-- Data must be fetched within 2.5 seconds.
-- Report must be exportable in PDF and CSV.
-- Must include a "Total Carbon Neutrality" indicator.`
-  );
+  // Update local state if prop changes (e.g., on first API result)
+  React.useEffect(() => {
+    if (initialDraft) {
+      setDraftContent(initialDraft);
+    }
+  }, [initialDraft]);
 
   return (
     <div className={styles.step3Layout}>
@@ -46,6 +44,21 @@ Acceptance Criteria:
           </div>
         </div>
 
+        {/* Acceptance Criteria Section */}
+        {acceptanceCriteria && acceptanceCriteria.length > 0 && (
+          <div className={styles.acContainer}>
+            <h3 className={styles.acTitle}>Acceptance Criteria</h3>
+            <div className={styles.acList}>
+              {acceptanceCriteria.map((ac, index) => (
+                <div key={index} className={styles.acItem}>
+                  <div className={styles.acDot}></div>
+                  <p className={styles.acText}>{ac}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className={styles.actionRow}>
           <button className={styles.generateButton} onClick={onNext}>
             <span style={{ fontSize: '18px' }}>🌱</span>
@@ -60,7 +73,7 @@ Acceptance Criteria:
 
       {/* Right Column: Audit Log */}
       <div className={styles.rightColumn}>
-        <AuditLogCard />
+        <AuditLogCard changes={auditChanges} />
       </div>
     </div>
   );

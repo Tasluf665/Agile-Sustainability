@@ -440,3 +440,221 @@ export const updateAISuggestion = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
+
+// @desc    Check user story quality using AI
+// @route   POST /api/ai/check-quality
+// @access  Private
+export const checkUserStoryQuality = async (req, res) => {
+  try {
+    const { story } = req.body;
+
+    if (!story) {
+      return res.status(400).json({ message: 'User story is required' });
+    }
+
+    const prompt = `
+You are an expert Agile coach specializing in writing high-quality user stories. 
+Your job is to evaluate a user story written by a Product Owner using the INVEST 
+principle and give them clear, honest feedback.
+
+INVEST stands for:
+- Independent: The story can be developed and delivered without depending on other stories.
+- Negotiable: The story is not a fixed contract. It leaves room for discussion and adjustment.
+- Valuable: The story delivers clear value to the end user or the business.
+- Estimable: The development team can estimate the effort required to complete it.
+- Small: The story is small enough to be completed within one sprint.
+- Testable: It is possible to write clear acceptance criteria and verify when it is done.
+
+User Story to evaluate:
+"${story}"
+
+Your response must be in this exact JSON format and nothing else. Do not include any 
+explanation, markdown, or text outside the JSON:
+
+{
+  "independent": {
+    "pass": true or false,
+    "note": "One sentence explaining why it passed or failed. Be specific."
+  },
+  "negotiable": {
+    "pass": true or false,
+    "note": "One sentence explaining why it passed or failed. Be specific."
+  },
+  "valuable": {
+    "pass": true or false,
+    "note": "One sentence explaining why it passed or failed. Be specific."
+  },
+  "estimable": {
+    "pass": true or false,
+    "note": "One sentence explaining why it passed or failed. Be specific."
+  },
+  "small": {
+    "pass": true or false,
+    "note": "One sentence explaining why it passed or failed. Be specific."
+  },
+  "testable": {
+    "pass": true or false,
+    "note": "One sentence explaining why it passed or failed. Be specific."
+  },
+  "score": a number from 0 to 100 reflecting overall quality,
+  "issues": [
+    "Plain English description of the first problem found.",
+    "Plain English description of the second problem found.",
+    "Plain English description of the third problem found."
+  ]
+}
+
+Scoring guide:
+- Each criterion that passes is worth approximately 16 points.
+- Deduct extra points if the story is very vague, too large, or untestable.
+- A story with all 6 criteria passing should score between 85 and 100.
+- A story with 3 criteria passing should score between 40 and 55.
+- A story with 0 criteria passing should score below 20.
+
+Rules for your notes:
+- Be specific. Do not write generic advice like "this story needs more detail."
+- Reference the actual content of the story in your note.
+- Keep each note under 20 words.
+- Use a helpful and constructive tone.
+
+Rules for the issues list:
+- Only list real problems. Do not invent problems that do not exist.
+- Write each issue in plain language a non-technical product owner can understand.
+- Maximum 5 issues. Minimum 1 issue if any criterion fails.
+- If all criteria pass, return an empty array: []
+`;
+
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' }
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    const aiContent = response.data.choices[0].message.content;
+    let parsedResult;
+    try {
+      parsedResult = JSON.parse(aiContent);
+    } catch (e) {
+      console.error('AI JSON Parse Error:', e);
+      return res.status(500).json({ message: 'AI returned invalid JSON', raw: aiContent });
+    }
+
+    res.json(parsedResult);
+
+  } catch (error) {
+    console.error('Error checking story quality:', error?.response?.data || error.message);
+    res.status(500).json({ message: 'Quality Check Failed', error: error.message });
+  }
+};
+
+// @desc    Restructure user story using AI
+// @route   POST /api/ai/restructure
+// @access  Private
+export const restructureUserStory = async (req, res) => {
+  try {
+    const { story } = req.body;
+
+    if (!story) {
+      return res.status(400).json({ message: 'User story is required' });
+    }
+
+    const prompt = `
+You are an expert Agile coach specializing in writing high-quality user stories. 
+Your job is to take a poorly written or unstructured user story and rewrite it into 
+a clean, well-structured user story that fully follows the INVEST principle.
+
+The structured user story must always follow this exact format:
+"As a [specific user role], I want [one clear action or feature], so that [a specific benefit or goal]."
+
+User Story to restructure:
+"${story}"
+
+Your response must be in this exact JSON format and nothing else. Do not include any 
+explanation, markdown, or text outside the JSON:
+
+{
+  "structured": "As a [specific user role], I want [one clear action], so that [specific benefit].",
+  "acceptance_criteria": [
+    "Given [context], When [action], Then [expected result].",
+    "Given [context], When [action], Then [expected result].",
+    "Given [context], When [action], Then [expected result]."
+  ],
+  "changes": [
+    "Short plain-English description of the first change you made and why.",
+    "Short plain-English description of the second change you made and why.",
+    "Short plain-English description of the third change you made and why."
+  ],
+  "split_suggestions": [
+    "Suggested story 1 that was removed from the original scope.",
+    "Suggested story 2 that was removed from the original scope."
+  ]
+}
+
+Rules for rewriting:
+- Identify who the user is. If the original story does not mention a user role, infer 
+  the most logical one from the context. Do not use vague roles like "user" — be 
+  specific, for example "registered viewer", "guest shopper", or "admin manager".
+- Focus on one single feature or action. If the original story covers multiple things, 
+  pick the most important one and make the rest into separate suggested stories.
+- Make the benefit in the "so that" clause specific and meaningful. It must explain 
+  why the user wants this feature, not just repeat what they want.
+- Keep the story small enough to be completed within one sprint. If the original story 
+  is too large, split it and return the most important part as the main story.
+- Make sure the story is testable. It must be possible to write acceptance criteria for it.
+- Do not add any technical implementation details. Focus on the user's need, not the solution.
+- Preserve the original intent of the user. Do not change what the user was trying to achieve.
+
+Rules for the changes list:
+- List only real changes you made. Do not invent changes.
+- Write each change in plain language a non-technical product owner can understand.
+- Explain not just what changed but why. For example: "Added a specific user role 
+  (registered viewer) because the original story did not mention who the user is."
+- Minimum 1 change. Maximum 6 changes.
+
+Rules for split_suggestions:
+- Only include this if the original story was too large and you had to remove scope.
+- Each suggestion must also follow the "As a... I want... So that..." format.
+- If no splitting was needed, return an empty array: []
+- Maximum 3 split suggestions.
+`;
+
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' }
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    const aiContent = response.data.choices[0].message.content;
+    let parsedResult;
+    try {
+      parsedResult = JSON.parse(aiContent);
+    } catch (e) {
+      console.error('AI JSON Parse Error:', e);
+      return res.status(500).json({ message: 'AI returned invalid JSON', raw: aiContent });
+    }
+
+    res.json(parsedResult);
+
+  } catch (error) {
+    console.error('Error restructuring story:', error?.response?.data || error.message);
+    res.status(500).json({ message: 'Restructuring Failed', error: error.message });
+  }
+};

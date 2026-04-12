@@ -2,29 +2,17 @@ import React from 'react';
 import { CheckCircle2, XCircle, AlertTriangle, Info, Leaf, ShieldCheck, Globe } from 'lucide-react';
 import styles from './Step4Sustainability.module.css';
 
-const Step4Sustainability = ({ onAccept, onBack }) => {
-  const functionalDraft = {
-    story: "As a delivery driver, I want to see the fastest route on my dashboard so that I can complete more orders per hour.",
-    criteria: [
-      "Dashboard must display the 'Fastest' route as the primary option by default.",
-      "System calculates estimated arrival time based on real-time traffic data.",
-      "One-tap navigation start from the dashboard interface."
-    ]
+const Step4Sustainability = ({ functionalStory, functionalCriteria, sustainableData, onAccept, onBack }) => {
+  // Use sustainableData if available, otherwise fallback to empty or loading state
+  const sustainableDraft = {
+    story: sustainableData?.sustainableStory || "Generating sustainable version...",
+    criteria: sustainableData?.acceptanceCriteria || [],
+    tradeoff: sustainableData?.co2ImpactNote || "Analyzing environmental impact..."
   };
 
-  const sustainableDraft = {
-    story: (
-      <>
-        "As a delivery driver, I want to see the most <span className={styles.storyHighlight}>carbon-efficient routes</span> prioritized on my dashboard, so that I can reduce fleet emissions while meeting delivery windows."
-      </>
-    ),
-    criteria: [
-      "Dashboard must display CO2 savings for the 'Green' route compared to the fastest route.",
-      "Driver notification system confirms if emission reduction target is met post-trip.",
-      "API integration with fleet telemetry must update idle-time metrics in real-time.",
-      "Route algorithm must favor non-congested zones to minimize brake wear particulates."
-    ],
-    tradeoff: "Prioritizing carbon efficiency may increase average transit time by 4.2% during peak hours but reduces idle time emissions by 18%."
+  const functionalDraft = {
+    story: functionalStory || "No story draft found.",
+    criteria: functionalCriteria || []
   };
 
   return (
