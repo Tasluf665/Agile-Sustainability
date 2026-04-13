@@ -160,6 +160,14 @@
   box-shadow: 0 15px 20px -5px rgba(28, 95, 32, 0.3);
 }
 
+.restructureButton:disabled {
+  background: #a8a29e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
 /* Issues Panel Styles */
 .issuesSidebar {
   width: 100%;

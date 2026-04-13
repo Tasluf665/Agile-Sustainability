@@ -141,6 +141,14 @@
   transform: translateY(-1px);
 }
 
+.generateButton:disabled {
+  background: #a8a29e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
 .backButton {
   background: white;
   border: 1px solid #e2e8f0;
@@ -158,6 +166,14 @@
 
 .backButton:hover {
   background: #f8fafc;
+}
+
+.backButton:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+  opacity: 0.7;
 }
 
 /* Audit Log Card */

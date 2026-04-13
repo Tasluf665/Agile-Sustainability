@@ -3,7 +3,7 @@ import { Send, ArrowLeft, Info, FileText } from 'lucide-react';
 import AuditLogCard from './AuditLogCard';
 import styles from './Step3Structure.module.css';
 
-const Step3Structure = ({ initialDraft, acceptanceCriteria, auditChanges, onNext, onBack }) => {
+const Step3Structure = ({ initialDraft, acceptanceCriteria, auditChanges, onNext, onBack, isGenerating }) => {
   const [draftContent, setDraftContent] = useState(initialDraft || '');
 
   // Update local state if prop changes (e.g., on first API result)
@@ -60,11 +60,25 @@ const Step3Structure = ({ initialDraft, acceptanceCriteria, auditChanges, onNext
         )}
 
         <div className={styles.actionRow}>
-          <button className={styles.generateButton} onClick={onNext}>
-            <span style={{ fontSize: '18px' }}>🌱</span>
-            Generate Sustainable Version
+          <button 
+            className={styles.generateButton} 
+            onClick={onNext}
+            disabled={isGenerating}
+          >
+            {isGenerating ? (
+              <>Processing...</>
+            ) : (
+              <>
+                <span style={{ fontSize: '18px' }}>🌱</span>
+                Generate Sustainable Version
+              </>
+            )}
           </button>
-          <button className={styles.backButton} onClick={onBack}>
+          <button 
+            className={styles.backButton} 
+            onClick={onBack}
+            disabled={isGenerating}
+          >
             <ArrowLeft size={16} />
             Back
           </button>

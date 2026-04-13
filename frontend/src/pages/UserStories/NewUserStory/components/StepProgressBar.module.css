@@ -32,6 +32,8 @@
   color: #a8a29e;
   opacity: 0.4;
   text-transform: uppercase;
+  position: relative;
+  z-index: 2;
 }
 
 .stepLabel {
@@ -39,6 +41,8 @@
   font-weight: 600;
   font-size: 14px;
   color: #a8a29e;
+  position: relative;
+  z-index: 2;
 }
 
 .highlightedStep {
@@ -53,11 +57,12 @@
   inset: 0;
   background: linear-gradient(to right, rgba(28, 95, 32, 0.8), rgba(28, 95, 32, 0.4));
   pointer-events: none;
+  z-index: 1;
 }
 
 .stepNumberActive {
   color: white;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .stepLabelActive {

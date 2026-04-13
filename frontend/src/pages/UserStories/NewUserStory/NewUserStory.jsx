@@ -170,6 +170,7 @@ const NewUserStory = () => {
             issues={qualityResults?.issues || []}
             qualityScore={qualityResults?.score || 0}
             onNext={handleNext}
+            isGenerating={isGenerating}
           />
         );
       case 3:
@@ -180,6 +181,7 @@ const NewUserStory = () => {
             auditChanges={structuredData?.changes || []}
             onNext={handleNext}
             onBack={handleBack}
+            isGenerating={isGenerating}
           />
         );
       case 4:

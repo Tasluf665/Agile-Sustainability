@@ -4,7 +4,7 @@ import INVESTCard from './INVESTCard';
 import IssuesPanel from './IssuesPanel';
 import styles from './Step2QualityCheck.module.css';
 
-const Step2QualityCheck = ({ originalStory, investResults, issues, qualityScore, onNext }) => {
+const Step2QualityCheck = ({ originalStory, investResults, issues, qualityScore, onNext, isGenerating }) => {
   return (
     <div className={styles.step2Layout}>
       <div className={styles.investSection}>
@@ -45,9 +45,13 @@ const Step2QualityCheck = ({ originalStory, investResults, issues, qualityScore,
           ))}
         </div>
 
-        <button className={styles.restructureButton} onClick={onNext}>
+        <button 
+          className={styles.restructureButton} 
+          onClick={onNext}
+          disabled={isGenerating}
+        >
           <Sparkles size={20} />
-          Restructure with INVEST
+          {isGenerating ? 'Processing...' : 'Restructure with INVEST'}
         </button>
       </div>
 
