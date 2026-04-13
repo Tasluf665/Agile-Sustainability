@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckCircle2, XCircle, AlertTriangle, Info, Leaf, ShieldCheck, Globe } from 'lucide-react';
 import styles from './Step4Sustainability.module.css';
 
-const Step4Sustainability = ({ functionalStory, functionalCriteria, sustainableData, onAccept, onBack }) => {
+const Step4Sustainability = ({ functionalStory, functionalCriteria, sustainableData, onAccept, onKeepOriginal, onBack, isSaving }) => {
   // Use sustainableData if available, otherwise fallback to empty or loading state
   const sustainableDraft = {
     story: sustainableData?.sustainableStory || "Generating sustainable version...",
@@ -98,13 +98,21 @@ const Step4Sustainability = ({ functionalStory, functionalCriteria, sustainableD
 
           {/* Final Action Row */}
           <div className={styles.actionRow}>
-            <button className={styles.acceptButton} onClick={onAccept}>
+            <button 
+              className={styles.acceptButton} 
+              onClick={onAccept}
+              disabled={isSaving || !sustainableData}
+            >
               <CheckCircle2 size={18} />
-              Accept Sustainable Version
+              {isSaving ? "Saving..." : "Accept Sustainable Version"}
             </button>
-            <button className={styles.keepOriginalButton} onClick={onBack}>
+            <button 
+              className={styles.keepOriginalButton} 
+              onClick={onKeepOriginal}
+              disabled={isSaving}
+            >
               <XCircle size={18} />
-              Keep Original
+              {isSaving ? "Saving..." : "Keep Original"}
             </button>
           </div>
         </div>

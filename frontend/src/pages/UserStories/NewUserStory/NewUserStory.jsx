@@ -140,15 +140,41 @@ const NewUserStory = () => {
     }
   };
 
+  const handleSaveUserStory = async (type) => {
+    setIsGenerating(true);
+    try {
+      const payload = {
+        projectId,
+        priority: 'MEDIUM',
+      };
+
+      if (type === 'sustainable') {
+        payload.originalDescription = description;
+        payload.sustainableDescription = sustainabilityData.sustainableStory;
+        payload.acceptanceCriteria = sustainabilityData.acceptanceCriteria;
+        payload.focusArea = sustainabilityData.focusArea;
+        payload.co2ImpactNote = sustainabilityData.co2ImpactNote;
+        payload.aiGenerated = true;
+      } else {
+        payload.originalDescription = structuredData.structured;
+        payload.acceptanceCriteria = structuredData.acceptance_criteria;
+        payload.aiGenerated = true; // Agent 1 still structured this draft
+      }
+
+      await api.post('/user-stories', payload);
+      navigate(`/projects/${projectId}`);
+    } catch (error) {
+      console.error('Failed to save user story:', error);
+      alert('Failed to save user story. Please try again.');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
-  };
-
-  const handleFinish = () => {
-    // Navigation to project detail after completion
-    navigate(`/projects/${projectId}`);
   };
 
   const renderCurrentStep = () => {
@@ -190,8 +216,10 @@ const NewUserStory = () => {
             functionalStory={structuredData?.structured || ''}
             functionalCriteria={structuredData?.acceptance_criteria || []}
             sustainableData={sustainabilityData}
-            onAccept={handleFinish}
+            onAccept={() => handleSaveUserStory('sustainable')}
+            onKeepOriginal={() => handleSaveUserStory('original')}
             onBack={handleBack}
+            isSaving={isGenerating}
           />
         );
       default:

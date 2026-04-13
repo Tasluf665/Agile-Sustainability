@@ -195,6 +195,14 @@
   transform: translateY(-1px);
 }
 
+.acceptButton:disabled {
+  background: #a8a29e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
 .keepOriginalButton {
   background: white;
   border: 1px solid #e2e8f0;
@@ -213,6 +221,14 @@
 .keepOriginalButton:hover {
   background: #f8fafc;
   color: #191d17;
+}
+
+.keepOriginalButton:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+  opacity: 0.7;
 }
 
 /* Why Matters Section */
