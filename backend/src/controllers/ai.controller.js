@@ -1,6 +1,8 @@
 import axios from 'axios';
 import AISuggestion from '../models/AISuggestion.model.js';
 
+const MODEL = "openai/gpt-oss-120b:free"
+
 // @desc    Generate sustainable user story using AI
 // @route   POST /api/ai/generate-user-story
 // @access  Private
@@ -114,7 +116,7 @@ Now transform the following user story:
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        model: MODEL,
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' }
       },
@@ -373,7 +375,7 @@ Postcondition: ${postcondition}
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        model: MODEL,
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' }
       },
@@ -527,7 +529,7 @@ Rules for the issues list:
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        model: MODEL,
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' }
       },
@@ -630,7 +632,7 @@ Rules for split_suggestions:
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        model: MODEL,
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' }
       },
