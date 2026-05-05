@@ -1,18 +1,34 @@
 import axios from 'axios';
 import AISuggestion from '../models/AISuggestion.model.js';
+import UserStory from '../models/UserStory.model.js';
 
-const MODEL = "openai/gpt-oss-120b:free"
+const MODEL = process.env.OPENROUTER_MODEL;
+
+const getProjectContextPrompt = async (projectId) => {
+  if (!projectId) return '';
+  try {
+    const previousStories = await UserStory.find({ projectId }).sort({ createdAt: -1 }).limit(10).lean();
+    if (previousStories && previousStories.length > 0) {
+      return `\n\nCONTEXT (Previous User Stories in this Project):\n${previousStories.map(s => `- ${s.sustainableDescription || s.originalDescription}`).join('\n')}\n\nPlease keep this context in mind to ensure consistency, avoid duplicates, and understand the project's overall domain.`;
+    }
+  } catch (error) {
+    console.error('Error fetching project context:', error);
+  }
+  return '';
+};
 
 // @desc    Generate sustainable user story using AI
 // @route   POST /api/ai/generate-user-story
 // @access  Private
 export const generateSustainableUserStory = async (req, res) => {
   try {
-    const { originalDescription, storyId } = req.body;
+    const { originalDescription, storyId, projectId } = req.body;
 
     if (!originalDescription) {
       return res.status(400).json({ message: 'originalDescription is required' });
     }
+
+    const contextPrompt = await getProjectContextPrompt(projectId);
 
     const prompt = `
       You are a Sustainability-Aware Agile Coach embedded in a product management tool called GreenStory. Your job is to transform standard agile user stories into sustainable user stories that reduce unnecessary energy consumption, data transfer, carbon emissions, and digital waste — without compromising the core user value.
@@ -111,7 +127,10 @@ Now transform the following user story:
 
       Original User Story:
       "${originalDescription}"
+      ${contextPrompt}
     `;
+
+    console.log(prompt);
 
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
@@ -448,11 +467,13 @@ export const updateAISuggestion = async (req, res) => {
 // @access  Private
 export const checkUserStoryQuality = async (req, res) => {
   try {
-    const { story } = req.body;
+    const { story, projectId } = req.body;
 
     if (!story) {
       return res.status(400).json({ message: 'User story is required' });
     }
+
+    const contextPrompt = await getProjectContextPrompt(projectId);
 
     const prompt = `
 You are an expert Agile coach specializing in writing high-quality user stories. 
@@ -469,6 +490,7 @@ INVEST stands for:
 
 User Story to evaluate:
 "${story}"
+${contextPrompt}
 
 Your response must be in this exact JSON format and nothing else. Do not include any 
 explanation, markdown, or text outside the JSON:
@@ -563,11 +585,13 @@ Rules for the issues list:
 // @access  Private
 export const restructureUserStory = async (req, res) => {
   try {
-    const { story } = req.body;
+    const { story, projectId } = req.body;
 
     if (!story) {
       return res.status(400).json({ message: 'User story is required' });
     }
+
+    const contextPrompt = await getProjectContextPrompt(projectId);
 
     const prompt = `
 You are an expert Agile coach specializing in writing high-quality user stories. 
@@ -579,6 +603,7 @@ The structured user story must always follow this exact format:
 
 User Story to restructure:
 "${story}"
+${contextPrompt}
 
 Your response must be in this exact JSON format and nothing else. Do not include any 
 explanation, markdown, or text outside the JSON:

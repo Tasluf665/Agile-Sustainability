@@ -45,10 +45,11 @@ export const fetchUserStoryById = createAsyncThunk(
 
 export const generateSustainableStory = createAsyncThunk(
   'userStories/generateSustainableStory',
-  async (originalDescription, { rejectWithValue }) => {
+  async ({ originalDescription, projectId }, { rejectWithValue }) => {
     try {
       const response = await api.post('/ai/generate-user-story', {
-        originalDescription
+        originalDescription,
+        projectId
       });
       // Return the object containing the new fields from the openrouter prompt
       return {

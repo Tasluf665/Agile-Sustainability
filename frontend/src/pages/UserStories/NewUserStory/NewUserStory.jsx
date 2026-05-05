@@ -75,7 +75,8 @@ const NewUserStory = () => {
     setIsGenerating(true);
     try {
       const response = await api.post('/ai/generate-user-story', { 
-        originalDescription: structuredData.structured 
+        originalDescription: structuredData.structured,
+        projectId
       });
       setSustainabilityData(response.data);
       setCurrentStep(4);
@@ -90,7 +91,7 @@ const NewUserStory = () => {
   const handleRestructure = async () => {
     setIsGenerating(true);
     try {
-      const response = await api.post('/ai/restructure', { story: description });
+      const response = await api.post('/ai/restructure', { story: description, projectId });
       setStructuredData(response.data);
       setCurrentStep(3);
     } catch (error) {
@@ -106,7 +107,7 @@ const NewUserStory = () => {
     
     setIsGenerating(true);
     try {
-      const response = await api.post('/ai/check-quality', { story: description });
+      const response = await api.post('/ai/check-quality', { story: description, projectId });
       const data = response.data;
       
       // Map AI response to the format expected by Step 2

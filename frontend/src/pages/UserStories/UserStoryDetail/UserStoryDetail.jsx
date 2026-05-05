@@ -57,7 +57,7 @@ const UserStoryDetail = () => {
 
   const handleRegenerate = () => {
     if (currentStory && currentStory.description) {
-      dispatch(generateSustainableStory(currentStory.description));
+      dispatch(generateSustainableStory({ originalDescription: currentStory.description, projectId }));
     }
   };
 
