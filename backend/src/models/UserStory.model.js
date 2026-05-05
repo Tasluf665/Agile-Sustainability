@@ -16,6 +16,10 @@ const userStorySchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add the original description'],
     },
+    structuredDescription: {
+      type: String,
+      default: '',
+    },
     sustainableDescription: {
       type: String,
       default: '',

@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckCircle2, XCircle, AlertTriangle, Info, Leaf, ShieldCheck, Globe } from 'lucide-react';
 import styles from './Step4Sustainability.module.css';
 
-const Step4Sustainability = ({ functionalStory, functionalCriteria, sustainableData, onAccept, onKeepOriginal, onBack, isSaving }) => {
+const Step4Sustainability = ({ originalStory, functionalStory, functionalCriteria, sustainableData, onAccept, onKeepOriginal, onBack, isSaving }) => {
   // Use sustainableData if available, otherwise fallback to empty or loading state
   const sustainableDraft = {
     story: sustainableData?.sustainableStory || "Generating sustainable version...",
@@ -27,6 +27,13 @@ const Step4Sustainability = ({ functionalStory, functionalCriteria, sustainableD
                OPTIMIZED DRAFT (AGENT 1)
             </div>
           </div>
+
+          {originalStory && (
+            <div className={styles.originalDraftBox}>
+              <span className={styles.originalDraftLabel}>ORIGINAL DRAFT</span>
+              <p className={styles.originalDraftText}>"{originalStory}"</p>
+            </div>
+          )}
 
           <div className={styles.contentCard}>
             <header className={`${styles.cardHeader} ${styles.functionalHeader}`}>

@@ -44,6 +44,32 @@
   gap: 6px;
 }
 
+/* Original Draft Box */
+.originalDraftBox {
+  background: #fafafa;
+  border: 1px dashed #d4d4d8;
+  border-radius: 12px;
+  padding: 16px 24px;
+}
+
+.originalDraftLabel {
+  font-size: 11px;
+  font-weight: 800;
+  color: #a1a1aa;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.originalDraftText {
+  font-size: 16px;
+  color: #3f3f46;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.5;
+}
+
 /* Draft Card */
 .draftCard {
   background: white;
@@ -99,17 +125,96 @@
   width: 100%;
 }
 
-.draftText {
+.editIconButton {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.editIconButton:hover {
+  background-color: #f1f5f9;
+  color: var(--color-primary-green, #1c5f20);
+}
+
+.editModeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: 100%;
+}
+
+.draftTextDisplay {
   font-family: 'Liberation Mono', monospace;
   font-size: 16px;
   line-height: 1.625;
   color: #191d17;
-  border: none;
-  resize: none;
+  white-space: pre-wrap;
+}
+
+.draftTextEditable {
+  font-family: 'Liberation Mono', monospace;
+  font-size: 16px;
+  line-height: 1.625;
+  color: #191d17;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  resize: vertical;
   width: 100%;
-  min-height: 320px;
+  min-height: 280px;
   outline: none;
-  background: transparent;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.draftTextEditable:focus {
+  border-color: #1c5f20;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelBtn, .saveBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+}
+
+.cancelBtn:hover {
+  background: #f1f5f9;
+}
+
+.saveBtn {
+  background: #1c5f20;
+  border: 1px solid #1c5f20;
+  color: white;
+}
+
+.saveBtn:hover {
+  background: #164a19;
 }
 
 /* Action Buttons Overlay */

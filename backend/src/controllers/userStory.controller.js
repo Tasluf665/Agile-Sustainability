@@ -47,6 +47,7 @@ export const createUserStory = async (req, res) => {
     const { 
       projectId, 
       originalDescription, 
+      structuredDescription,
       priority, 
       feature, 
       sustainableDescription, 
@@ -64,6 +65,7 @@ export const createUserStory = async (req, res) => {
       projectId,
       createdBy: req.user._id,
       originalDescription,
+      structuredDescription: structuredDescription || '',
       sustainableDescription: sustainableDescription || '',
       acceptanceCriteria: acceptanceCriteria || [],
       focusArea: focusArea || '',
@@ -93,6 +95,7 @@ export const updateUserStory = async (req, res) => {
   try {
     const { 
       originalDescription, 
+      structuredDescription,
       priority, 
       feature, 
       status,
@@ -113,6 +116,7 @@ export const updateUserStory = async (req, res) => {
     // We assume any authorized user in the project can update for now
 
     story.originalDescription = originalDescription !== undefined ? originalDescription : story.originalDescription;
+    story.structuredDescription = structuredDescription !== undefined ? structuredDescription : story.structuredDescription;
     story.priority = priority !== undefined ? priority : story.priority;
     story.feature = feature !== undefined ? feature : story.feature;
     story.status = status !== undefined ? status : story.status;

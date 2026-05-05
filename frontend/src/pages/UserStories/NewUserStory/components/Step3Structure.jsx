@@ -1,17 +1,37 @@
 import React, { useState } from 'react';
-import { Send, ArrowLeft, Info, FileText } from 'lucide-react';
+import { ArrowLeft, Info, FileText, Edit2, X, Check } from 'lucide-react';
 import AuditLogCard from './AuditLogCard';
 import styles from './Step3Structure.module.css';
 
-const Step3Structure = ({ initialDraft, acceptanceCriteria, auditChanges, onNext, onBack, isGenerating }) => {
+const Step3Structure = ({ originalDraft, initialDraft, acceptanceCriteria, auditChanges, onUpdate, onNext, onBack, isGenerating }) => {
   const [draftContent, setDraftContent] = useState(initialDraft || '');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedDraft, setEditedDraft] = useState(draftContent);
 
   // Update local state if prop changes (e.g., on first API result)
   React.useEffect(() => {
     if (initialDraft) {
       setDraftContent(initialDraft);
+      setEditedDraft(initialDraft);
     }
   }, [initialDraft]);
+
+  const handleEditClick = () => {
+    setEditedDraft(draftContent);
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+  };
+
+  const handleSaveEdit = () => {
+    setDraftContent(editedDraft);
+    if (onUpdate) {
+      onUpdate(editedDraft);
+    }
+    setIsEditing(false);
+  };
 
   return (
     <div className={styles.step3Layout}>
@@ -25,21 +45,51 @@ const Step3Structure = ({ initialDraft, acceptanceCriteria, auditChanges, onNext
           </div>
         </div>
 
+        {originalDraft && (
+          <div className={styles.originalDraftBox}>
+            <span className={styles.originalDraftLabel}>ORIGINAL DRAFT</span>
+            <p className={styles.originalDraftText}>"{originalDraft}"</p>
+          </div>
+        )}
+
         <div className={styles.draftCard}>
           <div className={styles.draftCardBlur}></div>
           <div className={styles.cardInner}>
             <header className={styles.cardHeader}>
-              <span className={styles.cardHeaderLabel}>STRUCTURED STORY DRAFT</span>
-              <FileText size={14} color="#94a3b8" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className={styles.cardHeaderLabel}>STRUCTURED STORY DRAFT</span>
+                <FileText size={14} color="#94a3b8" />
+              </div>
+              {!isEditing && (
+                <button className={styles.editIconButton} onClick={handleEditClick} title="Edit Draft">
+                  <Edit2 size={14} />
+                </button>
+              )}
             </header>
             
             <div className={styles.draftArea}>
-              <textarea
-                className={styles.draftText}
-                value={draftContent}
-                onChange={(e) => setDraftContent(e.target.value)}
-                spellCheck="false"
-              />
+              {isEditing ? (
+                <div className={styles.editModeContainer}>
+                  <textarea
+                    className={styles.draftTextEditable}
+                    value={editedDraft}
+                    onChange={(e) => setEditedDraft(e.target.value)}
+                    spellCheck="false"
+                  />
+                  <div className={styles.editActions}>
+                    <button className={styles.cancelBtn} onClick={handleCancelEdit}>
+                      <X size={14} /> Cancel
+                    </button>
+                    <button className={styles.saveBtn} onClick={handleSaveEdit}>
+                      <Check size={14} /> Save
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.draftTextDisplay}>
+                  {draftContent}
+                </div>
+              )}
             </div>
           </div>
         </div>

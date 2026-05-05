@@ -7,6 +7,7 @@ const formatStory = (story) => ({
   title: story.originalDescription ? story.originalDescription.substring(0, 50) + (story.originalDescription.length > 50 ? '...' : '') : 'Untitled Story',
   description: story.originalDescription,
   originalDescription: story.originalDescription,
+  structuredDescription: story.structuredDescription || '',
   sustainableDescription: story.sustainableDescription,
   acceptanceCriteria: story.acceptanceCriteria || [],
   priority: story.priority,
@@ -73,6 +74,7 @@ export const createUserStory = createAsyncThunk(
       const response = await api.post('/user-stories', {
         projectId: payload.projectId,
         originalDescription: payload.description,
+        structuredDescription: payload.structuredDescription,
         sustainableDescription: payload.sustainableDescription,
         acceptanceCriteria: payload.acceptanceCriteria,
         focusArea: payload.focusArea,

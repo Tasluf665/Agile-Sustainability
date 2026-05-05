@@ -151,14 +151,16 @@ const NewUserStory = () => {
 
       if (type === 'sustainable') {
         payload.originalDescription = description;
+        payload.structuredDescription = structuredData?.structured || '';
         payload.sustainableDescription = sustainabilityData.sustainableStory;
         payload.acceptanceCriteria = sustainabilityData.acceptanceCriteria;
         payload.focusArea = sustainabilityData.focusArea;
         payload.co2ImpactNote = sustainabilityData.co2ImpactNote;
         payload.aiGenerated = true;
       } else {
-        payload.originalDescription = structuredData.structured;
-        payload.acceptanceCriteria = structuredData.acceptance_criteria;
+        payload.originalDescription = description;
+        payload.structuredDescription = structuredData?.structured || '';
+        payload.acceptanceCriteria = structuredData?.acceptance_criteria || [];
         payload.aiGenerated = true; // Agent 1 still structured this draft
       }
 
@@ -203,9 +205,11 @@ const NewUserStory = () => {
       case 3:
         return (
           <Step3Structure 
+            originalDraft={description}
             initialDraft={structuredData?.structured || ''}
             acceptanceCriteria={structuredData?.acceptance_criteria || []}
             auditChanges={structuredData?.changes || []}
+            onUpdate={(newDraft) => setStructuredData(prev => ({ ...prev, structured: newDraft }))}
             onNext={handleNext}
             onBack={handleBack}
             isGenerating={isGenerating}
@@ -214,6 +218,7 @@ const NewUserStory = () => {
       case 4:
         return (
           <Step4Sustainability 
+            originalStory={description}
             functionalStory={structuredData?.structured || ''}
             functionalCriteria={structuredData?.acceptance_criteria || []}
             sustainableData={sustainabilityData}

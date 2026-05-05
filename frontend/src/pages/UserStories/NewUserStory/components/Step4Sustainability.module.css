@@ -47,6 +47,32 @@
   border: 1px solid #ddd6fe;
 }
 
+/* Original Draft Box */
+.originalDraftBox {
+  background: #fafafa;
+  border: 1px dashed #d4d4d8;
+  border-radius: 12px;
+  padding: 16px 24px;
+}
+
+.originalDraftLabel {
+  font-size: 11px;
+  font-weight: 800;
+  color: #a1a1aa;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.originalDraftText {
+  font-size: 16px;
+  color: #3f3f46;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.5;
+}
+
 /* Content Cards */
 .contentCard {
   background: white;

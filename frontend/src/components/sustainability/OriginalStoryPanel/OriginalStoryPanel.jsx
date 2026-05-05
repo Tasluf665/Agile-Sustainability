@@ -4,7 +4,7 @@ import Button from '../../common/Button/Button';
 import Textarea from '../../common/Textarea/Textarea';
 import styles from './OriginalStoryPanel.module.css';
 
-const OriginalStoryPanel = ({ description, priority, feature, onRegenerate, isGenerating, onUpdate }) => {
+const OriginalStoryPanel = ({ description, structuredDescription, priority, feature, onRegenerate, isGenerating, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
 
@@ -65,6 +65,15 @@ const OriginalStoryPanel = ({ description, priority, feature, onRegenerate, isGe
         ) : (
           <div className={styles.quoteBox}>
             <div className={styles.quoteText}>{`"${description}"`}</div>
+          </div>
+        )}
+
+        {structuredDescription && (
+          <div className={styles.structuredSection}>
+            <h3 className={styles.sectionTitle}>Structured User Story</h3>
+            <div className={styles.structuredBox}>
+              <div className={styles.structuredText}>{structuredDescription}</div>
+            </div>
           </div>
         )}
       </div>

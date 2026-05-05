@@ -222,6 +222,7 @@ const UserStoryDetail = () => {
               <div className={styles.leftPanelWrapper}>
                 <OriginalStoryPanel
                   description={currentStory.description}
+                  structuredDescription={currentStory.structuredDescription}
                   priority={currentStory.priority}
                   feature={currentStory.feature}
                   onRegenerate={handleRegenerate}
