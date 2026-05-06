@@ -6,7 +6,11 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "cd backend && node server.js",
-    "heroku-postbuild": "cd backend && npm install"
+    "start": "if [ \"$PROJECT\" = \"frontend\" ]; then npm run start:frontend; else npm run start:backend; fi",
+    "heroku-postbuild": "if [ \"$PROJECT\" = \"frontend\" ]; then npm run build:frontend; else npm run build:backend; fi",
+    "start:backend": "cd backend && node server.js",
+    "build:backend": "cd backend && npm install",
+    "start:frontend": "cd frontend && npx serve -s dist -l $PORT",
+    "build:frontend": "cd frontend && npm install && npm run build"
   }
 }
