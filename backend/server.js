@@ -6,7 +6,6 @@ const PORT = config.PORT;
 const server = app.listen(PORT, () => {
   console.log(`
     🚀 Server is running in ${config.NODE_ENV} mode on port ${PORT}
-    🔗 URL: http://localhost:${PORT}
   `);
 });
 
