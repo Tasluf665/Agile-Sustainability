@@ -24,6 +24,10 @@ const userStorySchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    functionalAcceptanceCriteria: {
+      type: [String],
+      default: [],
+    },
     acceptanceCriteria: {
       type: [String],
       default: [],

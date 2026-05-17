@@ -152,6 +152,7 @@ const NewUserStory = () => {
       if (type === 'sustainable') {
         payload.originalDescription = description;
         payload.structuredDescription = structuredData?.structured || '';
+        payload.functionalAcceptanceCriteria = structuredData?.acceptance_criteria || [];
         payload.sustainableDescription = sustainabilityData.sustainableStory;
         payload.acceptanceCriteria = sustainabilityData.acceptanceCriteria;
         payload.focusArea = sustainabilityData.focusArea;
@@ -160,7 +161,8 @@ const NewUserStory = () => {
       } else {
         payload.originalDescription = description;
         payload.structuredDescription = structuredData?.structured || '';
-        payload.acceptanceCriteria = structuredData?.acceptance_criteria || [];
+        payload.functionalAcceptanceCriteria = structuredData?.acceptance_criteria || [];
+        payload.acceptanceCriteria = []; // Assuming no sustainable criteria yet
         payload.aiGenerated = true; // Agent 1 still structured this draft
       }
 

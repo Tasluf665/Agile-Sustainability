@@ -223,6 +223,7 @@ const UserStoryDetail = () => {
                 <OriginalStoryPanel
                   description={currentStory.description}
                   structuredDescription={currentStory.structuredDescription}
+                  functionalAcceptanceCriteria={currentStory.functionalAcceptanceCriteria}
                   priority={currentStory.priority}
                   feature={currentStory.feature}
                   onRegenerate={handleRegenerate}

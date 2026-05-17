@@ -52,6 +52,7 @@ export const createUserStory = async (req, res) => {
       feature, 
       sustainableDescription, 
       acceptanceCriteria,
+      functionalAcceptanceCriteria,
       focusArea,
       co2ImpactNote,
       aiGenerated 
@@ -68,6 +69,7 @@ export const createUserStory = async (req, res) => {
       structuredDescription: structuredDescription || '',
       sustainableDescription: sustainableDescription || '',
       acceptanceCriteria: acceptanceCriteria || [],
+      functionalAcceptanceCriteria: functionalAcceptanceCriteria || [],
       focusArea: focusArea || '',
       co2ImpactNote: co2ImpactNote || '',
       aiGenerated: aiGenerated || false,
@@ -101,6 +103,7 @@ export const updateUserStory = async (req, res) => {
       status,
       sustainableDescription,
       acceptanceCriteria,
+      functionalAcceptanceCriteria,
       focusArea,
       co2ImpactNote,
       aiGenerated
@@ -122,6 +125,7 @@ export const updateUserStory = async (req, res) => {
     story.status = status !== undefined ? status : story.status;
     story.sustainableDescription = sustainableDescription !== undefined ? sustainableDescription : story.sustainableDescription;
     story.acceptanceCriteria = acceptanceCriteria !== undefined ? acceptanceCriteria : story.acceptanceCriteria;
+    story.functionalAcceptanceCriteria = functionalAcceptanceCriteria !== undefined ? functionalAcceptanceCriteria : story.functionalAcceptanceCriteria;
     story.focusArea = focusArea !== undefined ? focusArea : story.focusArea;
     story.co2ImpactNote = co2ImpactNote !== undefined ? co2ImpactNote : story.co2ImpactNote;
     story.aiGenerated = aiGenerated !== undefined ? aiGenerated : story.aiGenerated;
