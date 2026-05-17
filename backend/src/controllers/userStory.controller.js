@@ -55,7 +55,9 @@ export const createUserStory = async (req, res) => {
       functionalAcceptanceCriteria,
       focusArea,
       co2ImpactNote,
-      aiGenerated 
+      aiGenerated,
+      storyPoints,
+      sustainableStoryPoints
     } = req.body;
 
     if (!projectId || !originalDescription) {
@@ -73,6 +75,8 @@ export const createUserStory = async (req, res) => {
       focusArea: focusArea || '',
       co2ImpactNote: co2ImpactNote || '',
       aiGenerated: aiGenerated || false,
+      storyPoints: storyPoints || 0,
+      sustainableStoryPoints: sustainableStoryPoints || 0,
       priority: priority || 'MEDIUM',
       feature: feature || '',
       status: 'DRAFT',
@@ -106,7 +110,9 @@ export const updateUserStory = async (req, res) => {
       functionalAcceptanceCriteria,
       focusArea,
       co2ImpactNote,
-      aiGenerated
+      aiGenerated,
+      storyPoints,
+      sustainableStoryPoints
     } = req.body;
 
     const story = await UserStory.findById(req.params.id);
@@ -129,6 +135,8 @@ export const updateUserStory = async (req, res) => {
     story.focusArea = focusArea !== undefined ? focusArea : story.focusArea;
     story.co2ImpactNote = co2ImpactNote !== undefined ? co2ImpactNote : story.co2ImpactNote;
     story.aiGenerated = aiGenerated !== undefined ? aiGenerated : story.aiGenerated;
+    story.storyPoints = storyPoints !== undefined ? storyPoints : story.storyPoints;
+    story.sustainableStoryPoints = sustainableStoryPoints !== undefined ? sustainableStoryPoints : story.sustainableStoryPoints;
 
     const updatedStory = await story.save();
     res.json(updatedStory);

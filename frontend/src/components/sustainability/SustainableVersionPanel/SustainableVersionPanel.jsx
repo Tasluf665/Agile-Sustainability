@@ -16,11 +16,15 @@ const SustainableVersionPanel = ({
   isAccepting,
   isRegenerating,
   isApproved = false,
-  readonly = false
+  readonly = false,
+  sustainableStoryPoints = 0
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedCriteria, setEditedCriteria] = useState('');
+  const [editedStoryPoints, setEditedStoryPoints] = useState(sustainableStoryPoints || 0);
+  const [isEditingPoints, setIsEditingPoints] = useState(!sustainableStoryPoints || sustainableStoryPoints === 0);
+  const [isPointsSaved, setIsPointsSaved] = useState(false);
 
   useEffect(() => {
     setEditedDescription(description);
@@ -33,6 +37,15 @@ const SustainableVersionPanel = ({
       setEditedCriteria('');
     }
   }, [acceptanceCriteria]);
+
+  useEffect(() => {
+    setEditedStoryPoints(sustainableStoryPoints || 0);
+    if (sustainableStoryPoints > 0) {
+      setIsEditingPoints(false);
+    } else {
+      setIsEditingPoints(true);
+    }
+  }, [sustainableStoryPoints]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -58,6 +71,20 @@ const SustainableVersionPanel = ({
     }
     setIsEditing(false);
   };
+
+  const handleToggleStoryPoints = () => {
+    if (isEditingPoints) {
+      if (onUpdate) {
+        onUpdate({ sustainableStoryPoints: Number(editedStoryPoints) });
+        setIsPointsSaved(true);
+        setTimeout(() => setIsPointsSaved(false), 2000);
+      }
+      setIsEditingPoints(false);
+    } else {
+      setIsEditingPoints(true);
+    }
+  };
+
   return (
     <div className={styles.panelContainer}>
       <div className={styles.header}>
@@ -136,26 +163,51 @@ const SustainableVersionPanel = ({
       </div>
 
       {!isEditing && (
-        <div className={styles.actionsBox}>
-          {!isApproved && !readonly && (
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+          <div className={styles.actionsBox}>
+            {!isApproved && !readonly && (
+              <Button 
+                variant="primary" 
+                onClick={onAccept} 
+                isLoading={isAccepting}
+                className={styles.acceptButton}
+              >
+                <Check size={14} style={{ marginRight: '8px' }}/> Accept
+              </Button>
+            )}
             <Button 
-              variant="primary" 
-              onClick={onAccept} 
-              isLoading={isAccepting}
-              className={styles.acceptButton}
+              variant="outline" 
+              onClick={onRegenerate} 
+              isLoading={isRegenerating}
+              className={styles.regenerateButton}
+              disabled={isAccepting}
             >
-              <Check size={14} style={{ marginRight: '8px' }}/> Accept
+              <Sparkles size={14} style={{ marginRight: '8px' }}/> Regenerate
             </Button>
-          )}
-          <Button 
-            variant="outline" 
-            onClick={onRegenerate} 
-            isLoading={isRegenerating}
-            className={styles.regenerateButton}
-            disabled={isAccepting}
-          >
-            <Sparkles size={14} style={{ marginRight: '8px' }}/> Regenerate
-          </Button>
+          </div>
+
+          <div className={styles.storyPointsSection}>
+            <label className={styles.storyPointsLabel}>Sustainable Story Points</label>
+            <div className={styles.storyPointsRow}>
+              <input 
+                type="number" 
+                className={styles.storyPointsInput} 
+                value={editedStoryPoints} 
+                onChange={(e) => setEditedStoryPoints(e.target.value)}
+                min="0"
+                disabled={!isEditingPoints}
+                style={!isEditingPoints ? { backgroundColor: '#f1f5f9', color: '#64748b' } : {}}
+              />
+              <Button 
+                variant={isEditingPoints ? "primary" : "outline"} 
+                size="sm" 
+                onClick={handleToggleStoryPoints}
+                disabled={isPointsSaved}
+              >
+                {isPointsSaved ? <><Check size={14} style={{ marginRight: '4px' }} /> Saved</> : (isEditingPoints ? "Save" : "Edit")}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

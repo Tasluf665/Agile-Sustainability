@@ -4,13 +4,25 @@ import Button from '../../common/Button/Button';
 import Textarea from '../../common/Textarea/Textarea';
 import styles from './OriginalStoryPanel.module.css';
 
-const OriginalStoryPanel = ({ description, structuredDescription, functionalAcceptanceCriteria, priority, feature, onRegenerate, isGenerating, onUpdate }) => {
+const OriginalStoryPanel = ({ description, structuredDescription, functionalAcceptanceCriteria, storyPoints, onRegenerate, isGenerating, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDescription, setEditedDescription] = useState(description);
+  const [editedStoryPoints, setEditedStoryPoints] = useState(storyPoints || 0);
+  const [isEditingPoints, setIsEditingPoints] = useState(!storyPoints || storyPoints === 0);
+  const [isPointsSaved, setIsPointsSaved] = useState(false);
 
   useEffect(() => {
     setEditedDescription(description);
   }, [description]);
+
+  useEffect(() => {
+    setEditedStoryPoints(storyPoints || 0);
+    if (storyPoints > 0) {
+      setIsEditingPoints(false);
+    } else {
+      setIsEditingPoints(true);
+    }
+  }, [storyPoints]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -26,6 +38,19 @@ const OriginalStoryPanel = ({ description, structuredDescription, functionalAcce
       onUpdate({ originalDescription: editedDescription });
     }
     setIsEditing(false);
+  };
+
+  const handleToggleStoryPoints = () => {
+    if (isEditingPoints) {
+      if (onUpdate) {
+        onUpdate({ storyPoints: Number(editedStoryPoints) });
+        setIsPointsSaved(true);
+        setTimeout(() => setIsPointsSaved(false), 2000);
+      }
+      setIsEditingPoints(false);
+    } else {
+      setIsEditingPoints(true);
+    }
   };
 
   return (
@@ -92,20 +117,6 @@ const OriginalStoryPanel = ({ description, structuredDescription, functionalAcce
       </div>
 
       <div className={styles.contextSection}>
-        <h3 className={styles.contextTitle}>Original Context</h3>
-        <div className={styles.tagsRow}>
-          {priority && (
-            <div className={styles.tagPill}>
-              Priority: {priority}
-            </div>
-          )}
-          {feature && (
-            <div className={styles.tagPill}>
-              Feature: {feature}
-            </div>
-          )}
-        </div>
-        
         <Button 
           variant="outline" 
           onClick={onRegenerate}
@@ -115,6 +126,29 @@ const OriginalStoryPanel = ({ description, structuredDescription, functionalAcce
           <Sparkles size={14} style={{ marginRight: '8px' }} />
           Generate Sustainable User Story
         </Button>
+
+        <div className={styles.storyPointsSection}>
+          <label className={styles.storyPointsLabel}>Original Story Points</label>
+          <div className={styles.storyPointsRow}>
+            <input 
+              type="number" 
+              className={styles.storyPointsInput} 
+              value={editedStoryPoints} 
+              onChange={(e) => setEditedStoryPoints(e.target.value)}
+              min="0"
+              disabled={!isEditingPoints}
+              style={!isEditingPoints ? { backgroundColor: '#f1f5f9', color: '#64748b' } : {}}
+            />
+            <Button 
+              variant={isEditingPoints ? "primary" : "outline"} 
+              size="sm" 
+              onClick={handleToggleStoryPoints}
+              disabled={isPointsSaved}
+            >
+              {isPointsSaved ? <><Check size={14} style={{ marginRight: '4px' }} /> Saved</> : (isEditingPoints ? "Save" : "Edit")}
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

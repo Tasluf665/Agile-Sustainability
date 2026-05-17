@@ -168,6 +168,45 @@
   width: 100%;
 }
 
+.storyPointsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.storyPointsLabel {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #334155;
+  width: 100%;
+  max-width: 416px;
+}
+
+.storyPointsRow {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 416px;
+}
+
+.storyPointsInput {
+  flex: 1;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.storyPointsInput:focus {
+  border-color: var(--color-primary-green, #1c5f20);
+}
+
 .editField {
   display: flex;
   flex-direction: column;

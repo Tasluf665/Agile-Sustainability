@@ -17,6 +17,8 @@ const formatStory = (story) => ({
   focusArea: story.focusArea || '',
   co2ImpactNote: story.co2ImpactNote || '',
   aiGenerated: story.aiGenerated || false,
+  storyPoints: story.storyPoints || 0,
+  sustainableStoryPoints: story.sustainableStoryPoints || 0,
   useCaseCount: 0,
   assignees: story.createdBy ? [{ name: story.createdBy.name, avatarUrl: 'https://i.pravatar.cc/150?u=' + story.createdBy._id }] : []
 });

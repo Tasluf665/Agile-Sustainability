@@ -98,12 +98,15 @@ const UserStoryDetail = () => {
     } else {
       // Otherwise (approved story or a draft with existing sustainable fields),
       // we update the UserStory model directly.
+      const mappedUpdates = { ...updates };
+      if (mappedUpdates.sustainableStory !== undefined) {
+        mappedUpdates.sustainableDescription = mappedUpdates.sustainableStory;
+        delete mappedUpdates.sustainableStory;
+      }
+
       dispatch(updateUserStory({
         storyId,
-        updates: {
-          sustainableDescription: updates.sustainableStory,
-          acceptanceCriteria: updates.acceptanceCriteria
-        }
+        updates: mappedUpdates
       }));
     }
   };
@@ -180,6 +183,7 @@ const UserStoryDetail = () => {
             focusArea={focusArea}
             acceptanceCriteria={criteria}
             co2ImpactNote={co2ImpactNote}
+            sustainableStoryPoints={currentStory.sustainableStoryPoints}
             onAccept={handleAccept}
             onRegenerate={handleRegenerate}
             onUpdate={handleUpdateSustainableVersion}
@@ -224,8 +228,7 @@ const UserStoryDetail = () => {
                   description={currentStory.description}
                   structuredDescription={currentStory.structuredDescription}
                   functionalAcceptanceCriteria={currentStory.functionalAcceptanceCriteria}
-                  priority={currentStory.priority}
-                  feature={currentStory.feature}
+                  storyPoints={currentStory.storyPoints}
                   onRegenerate={handleRegenerate}
                   isGenerating={aiState.isGenerating}
                   onUpdate={handleUpdateOriginalStory}
