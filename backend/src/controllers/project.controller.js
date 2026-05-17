@@ -1,5 +1,7 @@
 import Project from '../models/Project.model.js';
 import ProjectMember from '../models/ProjectMember.model.js';
+import UserStory from '../models/UserStory.model.js';
+import UseCase from '../models/UseCase.model.js';
 
 // @desc    Get all projects for the current user
 // @route   GET /api/projects
@@ -9,12 +11,23 @@ export const getProjects = async (req, res, next) => {
     // Find all project memberships for this user
     const memberships = await ProjectMember.find({ userId: req.user._id }).populate('projectId');
     
-    const projects = memberships
+    let projects = memberships
       .filter(m => m.projectId !== null)
       .map(m => ({
         ...m.projectId._doc,
         userRole: m.role
       }));
+
+    // Fetch counts for User Stories and Use Cases
+    projects = await Promise.all(projects.map(async (p) => {
+      const userStoriesCount = await UserStory.countDocuments({ projectId: p._id });
+      const useCasesCount = await UseCase.countDocuments({ projectId: p._id });
+      return {
+        ...p,
+        userStoriesCount,
+        useCasesCount
+      };
+    }));
 
     res.status(200).json({
       success: true,
@@ -47,11 +60,16 @@ export const getProject = async (req, res, next) => {
       return res.status(403).json({ success: false, message: 'Not authorized to access this project' });
     }
 
+    const userStoriesCount = await UserStory.countDocuments({ projectId: project._id });
+    const useCasesCount = await UseCase.countDocuments({ projectId: project._id });
+
     res.status(200).json({
       success: true,
       data: {
         ...project._doc,
-        userRole: membership ? membership.role : 'admin'
+        userRole: membership ? membership.role : 'admin',
+        userStoriesCount,
+        useCasesCount
       }
     });
   } catch (error) {
@@ -117,9 +135,16 @@ export const updateProject = async (req, res, next) => {
       runValidators: true
     });
 
+    const userStoriesCount = await UserStory.countDocuments({ projectId: project._id });
+    const useCasesCount = await UseCase.countDocuments({ projectId: project._id });
+
     res.status(200).json({
       success: true,
-      data: project
+      data: {
+        ...project._doc,
+        userStoriesCount,
+        useCasesCount
+      }
     });
   } catch (error) {
     next(error);
