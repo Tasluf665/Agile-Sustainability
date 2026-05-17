@@ -1,0 +1,341 @@
+.tabContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1200px;
+  padding-bottom: 40px;
+}
+
+/* Stat Cards */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.progressStatCard {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px 25px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.progressStatTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0 0 16px 0;
+  line-height: 20px;
+}
+
+.progressStatContent {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.progressStatValue {
+  font-size: 36px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 40px;
+}
+
+.progressStatSubtitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  line-height: 16px;
+  padding-bottom: 6px;
+}
+
+.progressBarWrapper {
+  background-color: rgba(45, 106, 45, 0.2);
+  border-radius: 9999px;
+  height: 8px;
+  width: 100%;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.progressBar {
+  background-color: #2d6a2d;
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+/* Charts Grid */
+.chartsRow {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.chartPanel, .donutPanel {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.legendContainer {
+  display: flex;
+  gap: 16px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.legendColor {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+
+.barChartContainer {
+  height: 240px;
+  width: 100%;
+}
+
+/* Donut Panel */
+.donutChartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 240px;
+}
+
+.donutWrapper {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+.donutCenterLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donutPercentage {
+  font-size: 28px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 32px;
+}
+
+.donutText {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.donutLegends {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.donutLegendItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.donutLegendColor {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.donutLegendLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.donutLegendName {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Table Panel */
+.tablePanel {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(28, 95, 32, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+}
+
+.tableHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.exportButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(28, 95, 32, 0.2);
+  color: var(--color-primary);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.exportButton:hover {
+  background-color: rgba(28, 95, 32, 0.05);
+  border-color: var(--color-primary);
+}
+
+.exportButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.detailTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.detailTable th {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  letter-spacing: 0.5px;
+}
+
+.detailTable td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.storyTitle {
+  font-weight: 700;
+  color: #0f172a;
+  max-width: 320px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.overheadBadge {
+  background-color: rgba(45, 106, 45, 0.1);
+  color: #2d6a2d;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.rowRatioWrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.rowRatioBarBg {
+  background-color: rgba(45, 106, 45, 0.2);
+  width: 96px;
+  height: 8px;
+  border-radius: 9999px;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start; /* Base is left to right, overlay covers the base ratio */
+}
+
+.rowRatioBarFill {
+  background-color: #2d6a2d;
+  height: 100%;
+  border-radius: 9999px;
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .chartsRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

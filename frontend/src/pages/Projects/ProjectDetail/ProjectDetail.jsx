@@ -10,6 +10,7 @@ import StatCard from '../../../components/common/StatCard/StatCard';
 import SustainabilityScoreChart from '../../../components/sustainability/SustainabilityScoreChart/SustainabilityScoreChart';
 import ActivityFeed from '../../../components/common/ActivityFeed/ActivityFeed';
 import UserStoryRow from '../../../components/sustainability/UserStoryRow/UserStoryRow';
+import EffortTrackingTab from '../../../components/sustainability/EffortTrackingTab/EffortTrackingTab';
 import { PlusCircle, ArrowRight, ArrowLeft, Trash2, AlertTriangle, X } from 'lucide-react';
 import styles from './ProjectDetail.module.css';
 
@@ -28,7 +29,8 @@ import {
 
 const TABS = [
   { label: 'Overview', value: 'overview' },
-  { label: 'User Stories', value: 'stories' }
+  { label: 'User Stories', value: 'stories' },
+  { label: 'Effort Tracking', value: 'effort' }
 ];
 
 const ProjectDetail = () => {
@@ -261,7 +263,8 @@ const ProjectDetail = () => {
         <div className={styles.scrollableContent}>
           {activeTab === 'overview' ? renderOverviewTab() :
             activeTab === 'stories' ? renderStoriesTab() :
-              renderEmptyTab(TABS.find(t => t.value === activeTab)?.label)}
+              activeTab === 'effort' ? <EffortTrackingTab stories={activeStories} projectId={projectId} /> :
+                renderEmptyTab(TABS.find(t => t.value === activeTab)?.label)}
         </div>
       </div>
     </AppShell>
