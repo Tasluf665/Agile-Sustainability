@@ -473,8 +473,6 @@ export const checkUserStoryQuality = async (req, res) => {
       return res.status(400).json({ message: 'User story is required' });
     }
 
-    const contextPrompt = await getProjectContextPrompt(projectId);
-
     const prompt = `
 You are an expert Agile coach specializing in writing high-quality user stories. 
 Your job is to evaluate a user story written by a Product Owner using the INVEST 
@@ -490,7 +488,6 @@ INVEST stands for:
 
 User Story to evaluate:
 "${story}"
-${contextPrompt}
 
 Your response must be in this exact JSON format and nothing else. Do not include any 
 explanation, markdown, or text outside the JSON:
