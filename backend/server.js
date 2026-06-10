@@ -3,7 +3,7 @@ import { config } from './src/config/env.js';
 
 const PORT = config.PORT;
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`
     🚀 Server is running in ${config.NODE_ENV} mode on port ${PORT}
   `);
