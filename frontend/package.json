@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "start": "npx serve -s"
+    "start": "npx serve -s dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
